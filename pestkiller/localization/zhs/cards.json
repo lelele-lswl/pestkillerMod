@@ -192,9 +192,9 @@
   "POISON_SHIELD.description": "获得 {Block:diff()} 点格挡。抽 {Cards:diff()} 张牌。给予 {PoisonPower:diff()} 点中毒 {Repeat:diff()} 次。",
 
   "CHARMOD-FRESH_MEAT.title": "新鲜肉块",
-  "CHARMOD-FRESH_MEAT.description": "保留。获得 {Energy:diff()} 费。",
+  "CHARMOD-FRESH_MEAT.description": "获得 {Energy:diff()} 费。",
   "FRESH_MEAT.title": "新鲜肉块",
-  "FRESH_MEAT.description": "保留。获得 {Energy:diff()} 费。",
+  "FRESH_MEAT.description": "获得 {Energy:diff()} 费。",
 
   "CHARMOD-NUMERICAL_SLASH.title": "数值斩",
   "CHARMOD-NUMERICAL_SLASH.description": "造成 {Damage:diff()} 点伤害 {Repeat:diff()} 次。",

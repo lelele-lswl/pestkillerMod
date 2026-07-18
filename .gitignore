@@ -10,3 +10,19 @@ packages/
 .editorconfig
 *.user
 Directory.Build.props
+# Personal/temp files
+*.old
+*.old.*
+*.bak
+askme.text
+d
+_card_backup/
+_inspect/
+_resize_temp/
+_copy_ref.ps1
+gen_placeholders.ps1
+resize_cards.ps1
+scan.ps1
+export_presets.cfg
+CLAUDE.md
+.claude/
