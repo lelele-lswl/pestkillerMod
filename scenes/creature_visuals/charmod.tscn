@@ -1,0 +1,29 @@
+[gd_scene load_steps=3 format=3 uid="uid://cqoelrybydw8g"]
+
+[ext_resource type="Script" uid="uid://b3jimqxxah3t0" path="res://CharModCode/Scenes/CustomCreatureVisuals.cs" id="1_script"]
+[ext_resource type="Texture2D" uid="uid://47yy8d3rokxe" path="res://pic/pestkiller.png" id="2_img"]
+
+[node name="CharModVisuals" type="Node2D"]
+script = ExtResource("1_script")
+
+[node name="Visuals" type="Node2D" parent="."]
+unique_name_in_owner = true
+
+[node name="CharSprite" type="Sprite2D" parent="Visuals"]
+position = Vector2(-7.6293945e-06, -100)
+texture = ExtResource("2_img")
+
+[node name="Bounds" type="Control" parent="."]
+unique_name_in_owner = true
+layout_mode = 3
+anchors_preset = 0
+offset_left = -120.0
+offset_top = -180.0
+offset_right = 120.0
+offset_bottom = 180.0
+
+[node name="IntentPos" type="Marker2D" parent="."]
+unique_name_in_owner = true
+
+[node name="CenterPos" type="Marker2D" parent="."]
+unique_name_in_owner = true

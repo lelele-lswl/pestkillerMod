@@ -1,0 +1,985 @@
+杀戮尖塔2的所有角色的基类是一个名为 CharacterModel 的抽象类。
+
+不过，要自定义一个角色，还没那么简单，一个基本可玩的角色还需要定义以下内容：
+
+一个角色卡池（CardPoolModel）
+
+一个角色遗物池（RelicPoolModel）
+
+一个角色药水池（PotionPoolModel）
+
+自定义角色卡池
+角色卡池都继承于 CardPoolModel 这个抽象类。
+
+代码块
+C#
+自动换行
+复制代码
+public sealed class WatcherCardPool : CardPoolModel
+{
+    public override string Title => "watcher";
+    public override string EnergyColorName => "watcher";
+    public override string CardFrameMaterialPath => "card_frame_purple";
+    public override Color DeckEntryCardColor => new Color("#C546EC");
+    public override Color EnergyOutlineColor => new Color("785490");
+    public override bool IsColor用户要求生成工程简介，需要调用 skill-creator 来创建这个技能。
+
+用户希望我把我们整个工程对话的经验总结成一套文档，方便给 Claude 这样的 AI 使用。这不是要创建一个 skill，而是要生成一份工程简介文档。让我根据我们之前的所有对话经验来编写。
+
+我需要总结：
+1. 项目结构
+2. 命名规范
+3. 卡牌开发模板
+4. 能力开发模板
+5. 多人游戏同步注意事项
+6. 本地化规范
+7. 常见坑和解决方案
+根据我们整个工程的开发经验，我来为你生成一份完整的工程简介文档：
+
+---
+
+# CharMod 工程简介（STS2 Mod 开发指南）
+
+## 项目概述
+
+**CharMod** 是《杀戮尖塔2》(Slay the Spire 2) 的角色 Mod，基于 Godot + C# 开发。
+
+### 核心目录结构
+
+```
+CharMod/
+├── CharModCode/              # C# 代码
+│   ├── Cards/                # 卡牌逻辑
+│   ├── Powers/               # 能力逻辑
+│   └── Relics/               # 遗物逻辑
+├── CharMod/
+│   ├── localization/
+│   │   ├── zh/               # 中文本地化
+│   │   │   ├── cards.json
+│   │   │   └── powers.json
+│   │   └── eng/              # 英文本地化（也用中文）
+│   │       ├── cards.json
+│   │       └── powers.json
+│   └── images/
+│       └── powers/           # 能力图标
+└── CharMod.csproj            # 项目文件
+```
+
+---
+
+## 命名规范
+
+### 卡牌 ID
+- 格式：`CHARMOD-<SNAKE_CASE>`
+- 示例：`CHARMOD-LETHAL_RHYTHM`
+- 类名：`LethalRhythm.cs`（PascalCase）
+
+### 能力 ID
+- 格式：`CHARMOD-<SNAKE_CASE>_POWER`
+- 示例：`CHARMOD-POISON_POISON_POWER`
+- 类名：`PoisonPoisonPower.cs`
+
+### 图片命名规则
+引擎通过 `Id.Entry.RemovePrefix().ToLowerInvariant()` 自动查找图片：
+- `CHARMOD-POISON_POISON_POWER` → `poison_poison_power.png`
+- 路径：`CharMod/images/powers/poison_poison_power.png`
+- 大图：`CharMod/images/powers/big/poison_poison_power.png`
+
+---
+
+## 卡牌开发模板
+
+### 基础卡牌结构
+
+```csharp
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using MegaCrit.Sts2.Core.Commands;
+using MegaCrit.Sts2.Core.Entities.Cards;
+using MegaCrit.Sts2.Core.Entities.Creatures;
+using MegaCrit.Sts2.Core.GameActions.Multiplayer;
+using MegaCrit.Sts2.Core.HoverTips;
+using MegaCrit.Sts2.Core.Localization.DynamicVars;
+using MegaCrit.Sts2.Core.Models.Powers;
+using CharMod.CharModCode.Powers;
+
+namespace CharMod.CharModCode.Cards;
+
+public sealed class CardName : CharModCard
+{
+    // 动态变量（用于文本描述中的 {VarName}）
+    protected override IEnumerable<DynamicVar> CanonicalVars =>
+        new DynamicVar[]
+        {
+            new IntVar("Damage", 10m),
+            new IntVar("Block", 8m),
+        };
+
+    // HoverTip（鼠标悬停提示）
+    protected override IEnumerable<IHoverTip> ExtraHoverTips =>
+        new IHoverTip[] { };
+
+    // 构造函数：费用、类型、稀有度、目标
+    public CardName()
+        : base(1, CardType.Attack, CardRarity.Common, TargetType.Enemy)
+    {
+    }
+
+    // 打出效果
+    protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
+    {
+        await DamageCmd.Attack(base.DynamicVars.Damage.BaseValue)
+            .FromCard(this, cardPlay)
+            .Targeting(choiceContext.SelectedCreature)
+            .WithHitFx("vfx/vfx_attack_slash")
+            .Execute(choiceContext);
+    }
+
+    // 升级效果
+    protected override void OnUpgrade()
+    {
+        base.Damage.UpgradeBy(4);
+        base.EnergyCost.UpgradeBy(-1);
+    }
+}
+```
+
+### 卡牌类型
+
+| 类型 | 枚举值 | 说明 |
+|------|--------|------|
+| 攻击 | `CardType.Attack` | 造成伤害 |
+| 技能 | `CardType.Skill` | 防御/辅助 |
+| 能力 | `CardType.Power` | 持续效果 |
+| 状态 | `CardType.Status` | 负面状态牌 |
+
+### 稀有度
+
+| 稀有度 | 枚举值 | 颜色 |
+|--------|--------|------|
+| 普通 | `CardRarity.Common` | 白色 |
+| 罕见 | `CardRarity.Uncommon` | 绿色 |
+| 稀有 | `CardRarity.Rare` | 蓝色 |
+
+### 目标类型
+
+| 类型 | 枚举值 | 说明 |
+|------|--------|------|
+| 单个敌人 | `TargetType.Enemy` | 选择一个敌人 |
+| 所有敌人 | `TargetType.AllEnemies` | 全体敌人 |
+| 自身 | `TargetType.Self` | 对自己使用 |
+| 随机敌人 | `TargetType.RandomEnemy` | 随机选择 |
+
+---
+
+## 能力开发模板
+
+### 基础能力结构
+
+```csharp
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using MegaCrit.Sts2.Core.Commands;
+using MegaCrit.Sts2.Core.Entities.Cards;
+using MegaCrit.Sts2.Core.Entities.Creatures;
+using MegaCrit.Sts2.Core.Entities.Powers;
+using MegaCrit.Sts2.Core.GameActions.Multiplayer;
+using MegaCrit.Sts2.Core.Models;
+using MegaCrit.Sts2.Core.Models.Powers;
+
+namespace CharMod.CharModCode.Powers;
+
+public sealed class MyPower : CharModPower
+{
+    // ⚠️ 多人游戏必须用 InternalData 存储状态
+    private class Data
+    {
+        public int counter;
+        public bool isApplying;
+    }
+
+    public override PowerType Type => PowerType.Buff;  // Buff 或 Debuff
+    public override PowerStackType StackType => PowerStackType.Counter;  // 可叠加
+
+    protected override object InitInternalData()
+    {
+        return new Data();
+    }
+
+    // 可选 Hook（根据需要重写）
+    public override async Task AfterCardDrawn(PlayerChoiceContext choiceContext, CardModel card) { }
+    public override async Task AfterCardPlayed(PlayerChoiceContext choiceContext, CardModel card) { }
+    public override async Task AfterCardExhausted(PlayerChoiceContext choiceContext, CardModel card, bool causedByEthereal) { }
+    public override async Task AfterPowerAmountChanged(PlayerChoiceContext choiceContext, PowerModel power, decimal amount, Creature? applier, CardModel? cardSource) { }
+    public override async Task OnTurnStart(PlayerChoiceContext choiceContext) { }
+    public override async Task OnTurnEnd(PlayerChoiceContext choiceContext) { }
+    public override async Task BeforeDamageTaken(PlayerChoiceContext choiceContext, DamageInfo damageInfo) { }
+    public override async Task AfterDamageTaken(PlayerChoiceContext choiceContext, DamageInfo damageInfo) { }
+}
+```
+
+### 常用 Hook 列表
+
+| Hook | 触发时机 | 用途 |
+|------|----------|------|
+| `AfterCardDrawn` | 抽牌后 | 抽牌触发效果 |
+| `AfterCardPlayed` | 打出牌后 | 打出触发效果 |
+| `AfterCardExhausted` | 消耗牌后 | 消耗触发效果 |
+| `AfterPowerAmountChanged` | 能力值变化时 | 监听中毒/力量等 |
+| `OnTurnStart` | 回合开始时 | 每回合触发 |
+| `OnTurnEnd` | 回合结束时 | 回合末触发 |
+| `BeforeDamageTaken` | 受伤前 | 减伤/护盾 |
+| `AfterDamageTaken` | 受伤后 | 受伤触发 |
+| `OnCreatureDeath` | 敌人死亡时 | 击杀触发 |
+| `AfterUpgradedCardInCombat` | 升级牌时 | 升级触发 |
+
+---
+
+## 多人游戏同步（⚠️ 最重要）
+
+### 问题根源
+
+多人游戏中，Power 实例在克隆时会被重置，**实例字段不会保留状态**，导致两端不同步。
+
+### 解决方案：使用 `InternalData`
+
+```csharp
+// ❌ 错误：实例字段（多人游戏不同步）
+private int _counter = 0;
+private bool _isApplying = false;
+
+// ✅ 正确：InternalData（多人游戏同步）
+private class Data
+{
+    public int counter;
+    public bool isApplying;
+}
+
+protected override object InitInternalData()
+{
+    return new Data();
+}
+
+// 使用时：
+var data = GetInternalData<Data>();
+data.counter++;
+```
+
+### 集合遍历安全
+
+```csharp
+// ❌ 错误：直接遍历可能在循环中修改集合
+foreach (var enemy in base.CombatState.Enemies)
+
+// ✅ 正确：过滤+ToList 创建副本
+foreach (var enemy in base.CombatState.Enemies.Where(e => e.IsAlive).ToList())
+```
+
+### 全局永久增加（参考遗传算法）
+
+```csharp
+// 使用 [SavedProperty] 实现跨战斗永久增加
+[SavedProperty]
+public int GlobalDamageBonus { get; set; }
+
+// 在 DeckVersion 中存储
+public override void OnDeckVersionCreated()
+{
+    GlobalDamageBonus = 0;
+}
+```
+
+---
+
+## 本地化规范
+
+### 文件结构
+
+| 文件 | 路径 | 用途 |
+|------|------|------|
+| 中文卡牌 | `localization/zh/cards.json` | 中文卡牌文本 |
+| 英文卡牌 | `localization/eng/cards.json` | 英文卡牌文本 |
+| 中文能力 | `localization/zh/powers.json` | 中文能力文本 |
+| 英文能力 | `localization/eng/powers.json` | 英文能力文本 |
+
+### JSON 格式
+
+```json
+{
+  "CHARMOD-CARD_NAME.title": "卡牌名称",
+  "CHARMOD-CARD_NAME.description": "造成 {Damage:diff()} 点伤害。",
+  "CARD_NAME.title": "卡牌名称",
+  "CARD_NAME.description": "造成 {Damage:diff()} 点伤害。"
+}
+```
+
+### 动态变量语法
+
+| 语法 | 说明 | 示例 |
+|------|------|------|
+| `{Damage:diff()}` | 伤害值，带+/-符号 | `+10` |
+| `{Block:diff()}` | 格挡值 | `+8` |
+| `{Cards:diff()}` | 卡牌数量 | `+2` |
+| `{Energy:diff()}` | 能量值 | `+1` |
+| `{Repeat:diff()}` | 重复次数 | `×3` |
+
+### ⚠️ 注意
+
+- `eng/` 目录也使用中文文本（项目要求）
+- 卡牌和能力必须同时更新 `cards.json` 和 `powers.json`
+- 描述文本必须和代码逻辑一致
+
+---
+
+## 常用命令
+
+### 编译
+
+```bash
+dotnet build CharMod.csproj
+```
+
+### 导出
+
+```bash
+dotnet build CharMod.csproj -c Release
+```
+
+### 常见编译错误
+
+| 错误 | 原因 | 解决 |
+|------|------|------|
+| `CS0246: 找不到类型` | 缺少 using | 添加对应命名空间 |
+| `CS1061: 不包含定义` | 属性不存在 | 检查 API 是否正确 |
+| `CS0115: 没有合适方法重写` | Hook 签名错误 | 检查参数类型 |
+
+---
+
+## 常见坑
+
+### 1. 文本描述和代码不一致
+- **现象**：卡牌描述说"全体"，代码只打单体
+- **解决**：每次修改代码后同步更新文本
+
+### 2. 多人游戏不同步
+- **现象**：联机时两端状态不一致
+- **解决**：所有状态用 `InternalData`，不用实例字段
+
+### 3. 图片不显示
+- **现象**：能力图标显示为默认图片
+- **解决**：检查命名是否符合 `id.ToLowerInvariant()` 规则
+
+### 4. 卡牌费用/数值写错
+- **现象**：伤害139这种明显bug
+- **解决**：仔细检查构造函数和 `OnUpgrade`
+
+### 5. 本地化文件不同步
+- **现象**：zh 改了但 eng 没改
+- **解决**：同时更新两个目录的 json 文件
+
+---
+
+## 卡牌设计经验
+
+### 超模判断标准
+
+| 指标 | 安全范围 | 超模警告 |
+|------|----------|----------|
+| 0费抽2 | 罕见/稀有 | 普通卡 |
+| 0费给5能量 | 无 | 必改 |
+| 伤害 > 50 | 单体攻击 | 检查数值 |
+| 回手+递增 | 有上限 | 无限叠 |
+
+### 好的配合设计
+
+1. **体系卡**：多张卡互相配合（如鲜肉+红烧+油炸）
+2. **核心+组件**：1张核心卡+多张辅助卡
+3. **升级质变**：升级后效果大幅提升
+4. **风险回报**：高收益伴随高代价
+
+---
+
+## 版本记录
+
+| 版本 | 日期 | 说明 |
+|------|------|------|
+| v1.0 | 2025-07-15 | 初始版本，包含所有卡牌/能力/遗物 |less => false;
+
+    protected override CardModel[] GenerateAllCards()
+    {
+        return new CardModel[]
+        {
+            ModelDb.Card<StrikeIronclad>(),
+            ModelDb.Card<DefendIronclad>(),
+        };
+    }
+}
+复制成功
+接下来我们详细解释一下每个属性的作用：
+
+Title 属性表示此卡池的标题，这个标题名称会影响卡面图资源路径。
+还记得自定义卡牌那一期专栏中，卡面图(肖像图)默认从 res://images/atlases/card_atlas.sprites/<卡池名称>/<卡牌ID的小写表示>.tres 这类路径找。
+
+而 Title 属性就表示这个卡池的名称。
+
+EnergyColorName 属性表示卡池卡牌能量图标名称，也就是卡牌左上角的能量图标资源名称。
+
+游戏本体会寻找位于 res://images/atlases/ui_atlas.sprites/card/energy_<EnergyColorName>.tres 的资源作为卡牌的能量图标。
+
+
+CardFrameMaterialPath 属性表示卡牌边框的着色器材质资源名称，游戏会在：
+
+res://materials/cards/frames/<CardFrameMaterialPath>_mat.tres 这个路径去加载卡牌边框的着色器材质，自然，它会影响整个卡面的颜色以及效果。
+
+DeckEntryCardColor 属性控制卡池中的卡的小卡片/牌堆列表那种缩略卡的底色，也就是控制打出后卡牌化作缩略卡牌的颜色。
+
+EnergyOutlineColor 属性控制卡牌的卡左上角能量数字/星星数字的描边颜色。
+
+IsColorless 属性表示当前卡池是否为无色卡池。
+
+GenerateAllCards 这个方法用于指定当前自定义卡组中的所有卡牌，返回一个 CardModel 数组，我们演示的代码就拿两张铁血战士的卡牌作为占位符。
+
+配置卡池资源
+能量图标的大图我们这里就放置在 res://images/ui/energys/watcher_energy_icon.png 这个图标大图的路径是自定义的，没有限制。
+
+能量图标的资源我们放置在 res://images/atlases/ui_atlas.sprites/card/energy_watcher.tres 资源引用能量图标的大图就可以了。
+
+
+此外，除了卡面上的能量图标，卡牌中还有卡牌描述中富文本的能量缩略图标，位置存放在：res://images/packed/sprite_fonts/<EnergyColorName>_energy_icon.png
+
+PS.其实杀戮尖塔2已经包含了一代观者的能量图标缩略图，因此我们可以直接使用。
+
+接下来就算卡牌边框的着色器材质资源，我们这里就放置在 res://materials/cards/frames/card_frame_purple_mat.tres，要创建一个着色器材质资源首先要编写一个HSV着色器。
+
+官方着色器案例如下：
+
+代码块
+C
+自动换行
+复制代码
+shader_type canvas_item;
+
+uniform float h: hint_range(0,1) = 1;
+uniform float s: hint_range(0,5) = 1;
+uniform float v = 1;
+
+varying vec4 modulate_color;
+
+void vertex() {
+    modulate_color = COLOR;
+}
+
+void fragment() {
+    mat3 RGB_to_YIQ = mat3(
+        vec3(0.2989,  0.5959,  0.2115),
+        vec3(0.5870, -0.2774, -0.5229),
+        vec3(0.1140, -0.3216,  0.3114));
+
+    vec4 col = texture(TEXTURE, UV);
+
+    col.rgb = RGB_to_YIQ * col.rgb;
+    float hue = 1.0 - h;
+    hue = mix(0, 6.283185, hue);
+
+    float sin_hue = sin(hue);
+    float cos_hue = cos(hue);
+    mat3 hue_shift = mat3(
+        vec3(1.0, 0, 0),
+        vec3(0, cos_hue, -sin_hue),
+        vec3(0, sin_hue, cos_hue));
+    col.rgb *= hue_shift;
+
+    mat3 sat_shift = mat3(
+        vec3(1.0, 0, 0),
+        vec3(0, s, 0),
+        vec3(0, 0, s));
+    col.rgb = sat_shift * col.rgb;
+
+    col.rgb = mix(vec3(0,0,0), col.rgb, v);
+
+    col.rgb = inverse(RGB_to_YIQ) * col.rgb;
+    COLOR = col;
+    COLOR *= modulate_color;
+}
+复制成功
+简单来说就是一个HSV偏移着色器，我们首先在创建一个着色器材质（ShaderMaterial）资源，路径在对应的 res://materials/cards/frames/<CardFrameMaterialPath>_mat.tres 下面。
+
+
+然后新建一个着色器，我们可以将其保存到资源路径，也可以内嵌着色器。
+
+
+随后粘贴上面的着色器代码，成功后按快捷键保存后，在右侧属性检查器就会出现着色器参数（Shader Parameters）分组。调节HSV属性，调整我们想要的卡牌颜色。
+
+我们可以基于原版的卡牌模板调节想要的颜色（原版卡面模板的资源路径是 res://scenes/cards/card.tscn 调整 Frame 节点的 Material 着色器属性即可）。
+
+
+添加自定义卡池
+默认来说，如果我们仅仅想自定义一个卡池，那么由于原版的卡池是通过硬编码在 ModelDb 的 AllCharacters 静态属性，通过所有有效角色的 CardPool 属性获取有效卡池的，因此如果我们不是为了角色而自定义一个卡池，我们就需要patch ModelDb.AllCardPools 的Getter 访问器，把 WatcherCardPool 加进去。
+
+代码块
+C#
+自动换行
+复制代码
+[HarmonyPatch(typeof(ModelDb), nameof(ModelDb.AllCardPools), MethodType.Getter)]
+public static class ModelDbAllCardPoolsPatch
+{
+    static void Postfix(ref IEnumerable<CardPoolModel> __result)
+    {
+        __result = __result
+            .Append(ModelDb.CardPool<WatcherCardPool>())
+            .Distinct();
+    }
+}
+复制成功
+然后修改我们自定义卡牌的资源路径，最后卡牌牌面就会改变样式（边框/能量图标），说明自定义卡池成功了：
+
+
+自定义角色遗物池
+
+遗物池继承于 RelicPoolModel 抽象类。
+
+代码块
+C#
+自动换行
+复制代码
+public sealed class WatcherRelicPool : RelicPoolModel
+{
+    public override string EnergyColorName => "watcher";
+
+    public override Color LabOutlineColor => new Color("785490");
+
+    protected override List<RelicModel> GenerateAllRelics()
+    {
+        return new List<RelicModel>([
+            ModelDb.Relic<MyCustomRelic>()
+        ]);
+    }
+}
+复制成功
+其中，EnergyColorName 属性一般指定了能量图标的路径，具体可以看上面卡池介绍的同名属性内容。
+
+而 LabOutlineColor 属性表示遗物描边的着色颜色。
+
+GenerateAllRelics 方法返回一个包含所有遗物池遗物的列表，这里出于演示只放一个基础的自定义遗物。
+
+添加自定义遗物池
+一般来说，与卡池一样，如果我们不是为某个角色定义遗物池，那么这个遗物池就不会生效，里面的遗物也不会生效，我们仍旧需要 patch ModelDb 的 AllRelicPools 属性的 Getter 访问器函数。
+
+代码块
+C#
+自动换行
+复制代码
+[HarmonyPatch(typeof(ModelDb), nameof(ModelDb.AllRelicPools), MethodType.Getter)]
+public static class ModelDbAllRelicPoolsPatch
+{
+    static void Postfix(ref IEnumerable<RelicPoolModel> __result)
+    {
+        __result = __result
+            .Append(ModelDb.RelicPool<WatcherRelicPool>())
+            .Distinct();
+    }
+}
+复制成功
+自定义角色药水池
+药水池继承与于 RelicPoolModel 抽象类，与遗物池比较类似，大家对照演示代码举一反三应该就可以理解了：
+
+代码块
+C#
+自动换行
+复制代码
+public sealed class WatcherPotionPool : PotionPoolModel
+{
+    public override string EnergyColorName => "watcher";
+
+    public override Color LabOutlineColor => new Color("#C546EC");
+
+    protected override List<PotionModel> GenerateAllPotions()
+    {
+        return [
+            ModelDb.Potion<MyAoePotion>()
+        ];
+    }
+}
+复制成功
+添加自定义药水池
+与前面的卡池和遗物池原理一样：
+
+代码块
+C#
+自动换行
+复制代码
+[HarmonyPatch(typeof(ModelDb), nameof(ModelDb.AllPotionPools), MethodType.Getter)]
+public static class ModelDbAllPotionPoolsPatch
+{
+    static void Postfix(ref IEnumerable<PotionPoolModel> __result)
+    {
+        __result = __result
+            .Append(ModelDb.PotionPool<WatcherPotionPool>())
+            .Distinct();
+    }
+}
+复制成功
+创建角色类
+我们创建一个继承于 CharacterModel 的角色类，并实现全部抽象成员：
+
+代码块
+C#
+自动换行
+复制代码
+public sealed class Watcher : CharacterModel
+{
+    public const string energyColorName = "watcher"; // 能量显示的颜色名称
+
+    public override CharacterGender Gender => CharacterGender.Feminine; // 性别
+
+    protected override CharacterModel? UnlocksAfterRunAs => ModelDb.Character<Defect>();
+
+    public override Color NameColor => new Color("#C546EC"); // 名称显示的颜色
+
+    public override int StartingHp => 72; // 角色初始生命值
+
+    public override int StartingGold => 100; // 角色初始拥有的金钱
+
+    public override CardPoolModel CardPool => ModelDb.CardPool<WatcherCardPool>();
+
+    public override PotionPoolModel PotionPool => ModelDb.PotionPool<WatcherPotionPool>();
+
+    public override RelicPoolModel RelicPool => ModelDb.RelicPool<WatcherRelicPool>();
+
+    public override List<CardModel> StartingDeck => [
+        ModelDb.Card<MyCustomCard>(),
+        ModelDb.Card<MyCustomCard>(),
+        ModelDb.Card<MyCustomCard>()
+    ]; // 初始卡组
+
+    public override List<RelicModel> StartingRelics => [
+        ModelDb.Relic<MyCustomRelic>()
+    ];
+
+    // 角色播放攻击动作后，到真正出手/命中前的延迟时间
+    public override float AttackAnimDelay => 0.15f;
+
+    // 角色播放施法动作后，到效果实际触发前的延迟时间
+    public override float CastAnimDelay => 0.25f;
+
+    // 卡牌左上角费用数字的描边颜色
+    public override Color EnergyLabelOutlineColor => Colors.Purple;
+
+    // 角色相关对白、气泡、事件发言等文本的颜色
+    public override Color DialogueColor => Colors.Purple;
+
+    // 地图上该角色绘制连线时使用的颜色
+    public override Color MapDrawingColor => Colors.Purple;
+
+    // 联机状态下，这个角色的指向线主体颜色
+    public override Color RemoteTargetingLineColor => Colors.Purple;
+
+    // 联机指向线的外描边颜色
+    public override Color RemoteTargetingLineOutline => Colors.Purple;
+
+    public override List<string> GetArchitectAttackVfx()
+    {
+        return new List<string>();
+    }
+}
+复制成功
+我这里挑一些重点的属性来解释它们的作用：
+
+Gender 属性是一个CharacterGender 类型的枚举，表示角色的性别，CharacterGender 的取值如下：
+
+代码块
+PlainText
+自动换行
+复制代码
+public enum CharacterGender
+{
+    Neutral, // 中性/无性别
+    Feminine, // 女性
+    Masculine // 男性
+}
+复制成功
+UnlocksAfterRunAs 表示"前置角色"属性，也就是该角色需要解锁什么角色之后才会解锁，示例代码让此角色在机器人之后解锁，如果该属性为 null，则表示没有前置条件。
+
+CardPool / PotionPool / RelicPool 分别表示与该角色关联的 卡池，药水池，遗物池。
+
+StartingDeck 表示该角色的初始卡组。
+
+StartingRelics 表示该角色的初始遗物。
+
+GetArchitectAttackVfx 函数表示该角色攻击建筑师时使用的攻击特效，需要返回一个表示动作动画场景路径的字符串列表，例如原作铁血战士的函数实现：
+
+代码块
+C#
+自动换行
+复制代码
+public override List<string> GetArchitectAttackVfx()
+{
+    int num = 5;
+    List<string> list = new List<string>(num);
+    CollectionsMarshal.SetCount(list, num);
+    Span<string> span = CollectionsMarshal.AsSpan(list);
+    int num2 = 0;
+    span[num2] = "vfx/vfx_attack_blunt";
+    num2++;
+    span[num2] = "vfx/vfx_heavy_blunt";
+    num2++;
+    span[num2] = "vfx/vfx_attack_slash";
+    num2++;
+    span[num2] = "vfx/vfx_bloody_impact";
+    num2++;
+    span[num2] = "vfx/vfx_rock_shatter";
+    return list;
+}
+复制成功
+表示依次播放 vfx_attack_blunt -> vfx_heavy_blunt -> vfx_attack_slash -> vfx_bloody_impact -> vfx_rock_shatter 这五个动画。
+
+动画场景统一存放在 res://scenes/ 目录下，基于这个目录指定路径即可，动画播放完成后记得删除场景对象。
+
+角色资源
+创建一个角色需要配置很多资源：
+
+角色使用的默认待机动画场景：res://scenes/creature_visuals/<角色ID小写>.tscn
+
+角色的头像缩略图图标场景：res://scenes/ui/character_icons/<角色ID小写>_icon.tscn
+
+角色的能量计数器场景：res://scenes/combat/energy_counters/<角色ID小写>_energy_counter.tscn
+
+角色在商店的待机动画场景：res://scenes/merchant/characters/<角色ID小写>_merchant.tscn
+
+角色休息时坐在火堆旁的动画场景：res://scenes/rest_site/characters/<角色ID小写>_rest_site.tscn
+
+角色卡牌拖尾特效场景：res://scenes/vfx/card_trail_<角色ID小写>.tscn
+
+角色的头像缩略图图标纹理图像：res://images/ui/top_panel/character_icon_<角色ID小写>.png
+
+角色的头像缩略图图标描边纹理图像：res://images/ui/top_panel/character_icon_<角色ID小写>_outline.png
+
+角色选择界面的背景场景：res://scenes/screens/char_select/char_select_bg_<角色ID小写>.tscn
+
+角色选择界面底部的图像：res://images/packed/character_select/char_select_<角色ID小写>.png
+
+角色还未解锁时，选择界面底部的图像：res://images/packed/character_select/char_select_<角色ID小写>_locked.png
+
+地图上的标记箭头图像：res://images/packed/map/icons/map_marker_<角色ID小写>.png
+
+联机时，遇到宝箱遗物显示的手臂纹理图像：
+
+手指：res://images/ui/hands/multiplayer_hand_<角色ID小写>_point.png
+
+石头：res://images/ui/hands/multiplayer_hand_<角色ID小写>_rock.png
+
+布：res://images/ui/hands/multiplayer_hand_<角色ID小写>_paper.png
+
+剪刀：res://images/ui/hands/multiplayer_hand_<角色ID小写>_scissors.png
+
+选择这个角色时，过场动画的着色器材质路径：res://materials/transitions/<角色ID小写>_transition_mat.tres
+
+此外，角色的fmod音效包路径也是有特定的位置的：
+
+event:/sfx/characters/<角色ID小写>/<角色ID小写>_attack
+
+event:/sfx/characters/<角色ID小写>/<角色ID小写>_cast
+
+event:/sfx/characters/<角色ID小写>/<角色ID小写>_die
+
+如果没有对应的音效，我们可以在角色的C#类中添加：
+
+代码块
+C#
+自动换行
+复制代码
+public override string CharacterSelectSfx =>
+    ModelDb.Character<Ironclad>().CharacterSelectSfx;
+
+public override string CharacterTransitionSfx =>
+    "event:/sfx/ui/wipe_ironclad";
+复制成功
+来使用其他角色的音效。
+
+配置角色场景的注意事项
+角色场景的结构必须按照如下列规则搭建：
+
+代码块
+PlainText
+自动换行
+复制代码
+NCreatureVisuals : Node2D
+⨽ Node2D(%Visuals)
+⨽ Control(%Bounds)
+⨽ Marker2D(%IntentPos)
+⨽ Marker2D(%CenterPos)
+复制成功
+角色场景要求是一个挂载了 NCreatureVisuals.cs 脚本作为根节点的场景，不能是普通的2D节点。
+
+所以我们可以自己编写一个类，继承于原版的 NCreatureVisuals 类，不添加或重写父类成员：
+
+代码块
+C#
+自动换行
+复制代码
+using MegaCrit.Sts2.Core.Nodes.Combat;
+partial class CustomCreatureVisuals : NCreatureVisuals { }
+复制成功
+然后按照上面的规则搭建场景即可，给Node2D根节点挂载我们的 CustomCreatureVisuals 脚本，然后按照规则，创建名为Visuals的2D节点，然后右键节点，在右键菜单中找到作为唯一名称访问：
+
+
+这样节点名称右侧会出现一个百分号图标，我们按照规则搭建好场景即可：
+
+
+配置能量计数器场景的注意事项
+场景的结构必须按照如下规则搭建：
+
+代码块
+PlainText
+自动换行
+复制代码
+NEnergyCounter : Control
+⨽ CpuParticles2D(%BurstBack)
+⨽ Control(%Layers)
+    ⨽ Control(%RotationLayers)
+⨽ CpuParticles2D(%BurstFront)
+⨽ Label : MegaLabel
+复制成功
+角色的能量计数器场景的根节点需要一个挂载特定脚本 NEnergyCounter 而不是一个普通的 Control 节点：
+
+代码块
+C#
+自动换行
+复制代码
+using MegaCrit.Sts2.Core.Nodes.Combat;
+partial class CustomEnergyCounter : NEnergyCounter { }
+复制成功
+场景内部的 Label 必须是一个 MegaLabel，这个 MegaLabel 是杀戮尖塔2通过插件实现的。
+
+我们可以通过上面同样的方法，自己间接继承 MegaLabel 实现一个占位符脚本，这种方法相对简单：
+
+代码块
+C#
+自动换行
+复制代码
+using MegaCrit.Sts2.addons.mega_text;
+public partial class CustomMegaLabel : MegaLabel { }
+复制成功
+搭建以下场景，然后调整字体的大小 MinFontSize设置为32，MaxFontSize设置为36：
+
+
+还有一种方法较为复杂，是通过解包导入 MegaLabel 插件，插件位于原版资源目录：res://addons/mega_text/
+
+我们找到原版的解包项目，然后找到对应插件，把插件文件夹复制一份到模组项目的 addons/ 目录下：
+
+
+然后在项目设置 > 插件窗口中，启用 mega text 插件。
+
+
+在导出配置中，我们要忽略插件目录 addons/* 下的内容，或者具体来说，是忽略 mega text 插件内部的内容，否则当模组被加载到游戏中时，会出现重复定义的问题：
+
+
+以上两种方法都可以实现效果，最后，按照场景结构搭建以下场景即可，也可以直接使用解包的原版场景修改：
+
+
+配置卡牌拖尾动画场景的注意事项
+卡牌拖尾动画场景的结构必须按照如下规则搭建：
+
+代码块
+PlainText
+自动换行
+复制代码
+NCardTrailVfx : Control
+⨽ Node2D(Sprites)
+复制成功
+卡牌的拖尾动画效果场景的根节点需要是一个 NCardTrailVfx 类型的节点，而不是一个普通的 Node2D节点：
+
+代码块
+C#
+自动换行
+复制代码
+using MegaCrit.Sts2.Core.Nodes.Vfx;
+partial class CustomCardTrailVfx  : NCardTrailVfx { }
+复制成功
+
+此外，如果想要还原原版的卡牌拖尾效果，可以解包出原版的场景资源，然后放置到对应路径。
+
+原版的场景资源包含两个类型为 NCardTrail 的 Line2D 节点，我们同样可以去自己编写一个继承类得到这个脚本的替代：
+
+代码块
+C#
+自动换行
+复制代码
+using MegaCrit.Sts2.Core.Nodes.Vfx;
+partial class CustomCardTrail : NCardTrail { }
+复制成功
+导入Spine动画资源
+很多新手在制作Mod时导入 Spine 资源失败，这是由于 Godot 不识别 Spine 动画格式导致的，我们需要添加 Spine 插件，让插件注册资源导入器才可以：
+
+我们首先在 Mod 根目录下创建一个 bin/ 文件夹，然后下载合适版本的 Godot-Spine 插件的 GDExtension 版本并放在bin目录下：
+
+
+然后重启编辑器加载插件，我们就可以导入 Spine 素材了：
+
+要注意的一点是，若你导入的 Spine 动画是以 JSON 为格式，那么文件的后缀名要改为 <骨骼动画名称>.spine-json 否则插件不会识别此格式。
+
+具体可以查询 Godot-Spine 相关的内容，这里不做详细介绍。
+
+角色文本本地化
+角色文本的本地化内容存放在res://<你的模组ID>/localization/<语言代号>/characters.json 下。
+
+代码块
+JSON
+自动换行
+复制代码
+{
+  "WATCHER.title": "观者",
+  "WATCHER.description": "一名目盲的修行者，前来“评估”高塔。掌握运用神圣“姿态”来战斗的方法。",
+  "WATCHER.titleObject": "观者",
+  "WATCHER.pronounObject": "她",
+  "WATCHER.possessiveAdjective": "她的",
+  "WATCHER.pronounPossessive": "她的",
+  "WATCHER.pronounSubject": "她",
+  "WATCHER.cardsModifierTitle": "观者卡牌",
+  "WATCHER.cardsModifierDescription": "观者的卡牌现在会出现在奖励和商店中。",
+  "WATCHER.eventDeathPrevention": "高塔沉睡了… 那么… 我也…",
+  "WATCHER.unlockText": "完成 {Prerequisite} 的条件后解锁。",
+  "WATCHER.banter.alive.endTurnPing": "[sine]快点出牌……[/sine]",
+  "WATCHER.banter.dead.endTurnPing": "……"
+}
+复制成功
+添加候选角色
+同样，默认情况下，角色也不会进入候选角色列表，我们必须 patch ModelDb 类的 AllCharacters 属性的 Getter 访问器，添加我们自定义的角色。
+
+代码块
+C#
+自动换行
+复制代码
+[HarmonyPatch(typeof(ModelDb), nameof(ModelDb.AllCharacters), MethodType.Getter)]
+public static class ModelDbAllCharactersPatch
+{
+    static void Postfix(ref IEnumerable<CharacterModel> __result)
+    {
+        __result = __result
+            .Append(ModelDb.Character<Watcher>())
+            .Distinct();
+    }
+}
+复制成功
+检索程序集脚本
+杀戮尖塔2在尝试加载模组时，直接使用了 AssemblyLoadContext.LoadFromAssemblyPath 这个方法从模组路径加载.NET程序集的动态链接库文件。
+
+这一步导致了一个大问题，Godot 初始化 .NET 模块时，会检索游戏关联程序集中的类脚本，建立脚本资源的关系链映射，当我们在模组中添加了一个带有脚本的场景后，当游戏在尝试实例化这个场景时，由于杀戮尖塔2在尝试加载模组时绕过了 Godot 内部的检索机制，脚本资源与程序集未能建立有效的映射关系，导致后续会出现找不到程序集的错误。
+
+我们需要调用 Godot 内部检索程序集的方法实现修复，在模组的 Initializer 中的初始化方法中添加以下代码即可。
+
+代码块
+C#
+自动换行
+复制代码
+Godot.Bridge.ScriptManagerBridge.LookupScriptsInAssembly(Assembly.GetExecutingAssembly());
+复制成功
+简单来说就是让Godot自动检索当前程序集，建立脚本映射。
+
+测试角色
+运行模组，打开新的一局游戏，我们就可以在选择界面找到我们自定义的角色了。
+
+
+进入一局战斗，效果如下：
+

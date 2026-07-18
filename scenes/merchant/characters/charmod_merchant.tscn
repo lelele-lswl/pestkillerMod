@@ -1,0 +1,12 @@
+[gd_scene load_steps=2 format=3 uid="uid://b3uqof3gwq1lc"]
+
+[ext_resource type="Texture2D" uid="uid://47yy8d3rokxe" path="res://pic/pestkiller.png" id="1_img"]
+
+[node name="CharModMerchant" type="Node2D"]
+
+[node name="Visuals" type="Node2D" parent="."]
+
+[node name="CharSprite" type="Sprite2D" parent="Visuals"]
+position = Vector2(4, 10)
+scale = Vector2(0.1726517, 0.17735663)
+texture = ExtResource("1_img")

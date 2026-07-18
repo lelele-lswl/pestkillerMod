@@ -1,0 +1,14 @@
+{
+  "CHARMOD-MODIFIED_HIVE.title": "改造蜂巢",
+  "CHARMOD-MODIFIED_HIVE.description": "每当你受到一段未被防御的伤害时，抽 1 张牌。",
+  "CHARMOD-MODIFIED_HIVE.flavor": "嗡嗡作响，充满潜能。",
+  "MODIFIED_HIVE.title": "改造蜂巢",
+  "MODIFIED_HIVE.description": "每当你受到一段未被防御的伤害时，抽 1 张牌。",
+  "MODIFIED_HIVE.flavor": "嗡嗡作响，充满潜能。",
+  "CHARMOD-HOLY_HIVE.title": "圣巢",
+  "CHARMOD-HOLY_HIVE.description": "每当你受到一段未被防御的伤害时，抽 2 张牌。",
+  "CHARMOD-HOLY_HIVE.flavor": "神圣的蜂鸣回荡在每一条脉络中。",
+  "HOLY_HIVE.title": "圣巢",
+  "HOLY_HIVE.description": "每当你受到一段未被防御的伤害时，抽 2 张牌。",
+  "HOLY_HIVE.flavor": "神圣的蜂鸣回荡在每一条脉络中。"
+}

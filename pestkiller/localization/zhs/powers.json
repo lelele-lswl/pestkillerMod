@@ -1,0 +1,85 @@
+{
+  "CHARMOD-EVOLVE_POWER.title": "进化",
+  "CHARMOD-EVOLVE_POWER.description": "每当抽到一张状态牌，抽1张牌。",
+  "CHARMOD-EVOLVE_POWER.smartDescription": "每当抽到一张状态牌，抽{Amount}张牌。",
+
+  "CHARMOD-NUCLEAR_FISSION_POWER.title": "核裂变",
+  "CHARMOD-NUCLEAR_FISSION_POWER.description": "每当一张牌被消耗，获得1点能量。",
+  "CHARMOD-NUCLEAR_FISSION_POWER.smartDescription": "每当一张牌被消耗，获得{Amount}点能量。",
+
+  "CHARMOD-MECHANIZATION_POWER.title": "机械化",
+  "CHARMOD-MECHANIZATION_POWER.description": "每抽6张牌，额外抽1张牌。",
+  "CHARMOD-MECHANIZATION_POWER.smartDescription": "每抽6张牌，额外抽{Amount}张牌。",
+
+  "CHARMOD-REFINE_POWER.title": "提炼",
+  "CHARMOD-REFINE_POWER.description": "每当一张牌被消耗，获得1点力量。",
+  "CHARMOD-REFINE_POWER.smartDescription": "每当一张牌被消耗，获得{Amount}点力量。",
+
+  "CHARMOD-BRANCH_POWER.title": "树枝",
+  "CHARMOD-BRANCH_POWER.description": "每当一张牌被消耗，随机生成1张牌。",
+  "CHARMOD-BRANCH_POWER.smartDescription": "每当一张牌被消耗，随机生成{Amount}张牌。",
+
+  "CHARMOD-TENDER_POWER.title": "柔嫩",
+  "CHARMOD-TENDER_POWER.description": "每打出一张牌，获得1点力量和1点敏捷。",
+  "CHARMOD-TENDER_POWER.smartDescription": "每打出一张牌，获得{Amount}点力量和{Amount}点敏捷。",
+
+  "CHARMOD-PLUNDER3_POWER.title": "掠夺3",
+  "CHARMOD-PLUNDER3_POWER.description": "战斗结束后获得1个随机遗物。",
+  "CHARMOD-PLUNDER3_POWER.smartDescription": "战斗结束后获得{Amount}个随机遗物。",
+
+  "CHARMOD-MELT_POWER.title": "融化",
+  "CHARMOD-MELT_POWER.description": "攻击牌费用变为0，打出后消耗。",
+  "CHARMOD-MELT_POWER.smartDescription": "攻击牌费用变为0，打出后消耗。",
+
+  "CHARMOD-PATHWAY_POWER.title": "通路",
+  "CHARMOD-PATHWAY_POWER.description": "激发时：每层抽1张牌，加1费，造成8点伤害。",
+  "CHARMOD-PATHWAY_POWER.smartDescription": "激发时：每层抽1张牌，加1费，造成8点伤害。",
+
+  "CHARMOD-POISON_POISON_POWER.title": "毒毒！！",
+  "CHARMOD-POISON_POISON_POWER.description": "每当你给予2次中毒，额外给予一次中毒。",
+  "CHARMOD-POISON_POISON_POWER.smartDescription": "每当你给予2次中毒，额外给予一次{Amount}点中毒。",
+
+  "CHARMOD-POISON_COAT_POWER.title": "涂毒plus",
+  "CHARMOD-POISON_COAT_POWER.description": "每当你造成2次未被格挡的攻击伤害，给予1点中毒。",
+  "CHARMOD-POISON_COAT_POWER.smartDescription": "每当你造成{Amount}次未被格挡的攻击伤害，给予1点中毒。",
+
+  "CHARMOD-POISON_POISON2_POWER.title": "毒毒？？",
+  "CHARMOD-POISON_POISON2_POWER.description": "每当你抽1张牌、消耗1张牌或打出1张牌，给予所有敌人1层中毒。",
+  "CHARMOD-POISON_POISON2_POWER.smartDescription": "每当你抽1张牌、消耗1张牌或打出1张牌，给予所有敌人{Amount}层中毒。",
+
+  "CHARMOD-BARREN_POWER.title": "片草不生",
+  "CHARMOD-BARREN_POWER.description": "每当你给予1次中毒，抽1张牌。",
+  "CHARMOD-BARREN_POWER.smartDescription": "每当你给予1次中毒，抽{Amount}张牌。",
+
+  "CHARMOD-ELECTRIC_FIELD_POWER.title": "电场",
+  "CHARMOD-ELECTRIC_FIELD_POWER.description": "每回合开始时，激发所有敌人身上的通路。",
+  "CHARMOD-ELECTRIC_FIELD_POWER.smartDescription": "每回合开始时，激发所有敌人身上的通路。",
+
+  "CHARMOD-ASSEMBLY_LINE_POWER.title": "流水线",
+  "CHARMOD-ASSEMBLY_LINE_POWER.description": "每回合开始时，选择并消耗2张手牌，抽1张牌。",
+  "CHARMOD-ASSEMBLY_LINE_POWER.smartDescription": "每回合开始时，选择并消耗{Amount}张手牌，抽1张牌。",
+
+  "CHARMOD-FOCUS_POWER.title": "聚能",
+  "CHARMOD-FOCUS_POWER.description": "含斩字的牌伤害提升20%。",
+  "CHARMOD-FOCUS_POWER.smartDescription": "含斩字的牌伤害提升{Amount}×20%。打出斩牌后层数清零。",
+
+  "CHARMOD-SLASH_POWER.title": "斩",
+  "CHARMOD-SLASH_POWER.description": "敌人攻击伤害×0.85。",
+  "CHARMOD-SLASH_POWER.smartDescription": "敌人攻击伤害×0.85^{Amount}。回合结束时消失。",
+
+  "CHARMOD-TORTURE_POWER.title": "酷刑",
+  "CHARMOD-TORTURE_POWER.description": "身上有通路效果的敌人受攻击伤害+50%。",
+  "CHARMOD-TORTURE_POWER.smartDescription": "身上有通路效果的敌人受攻击伤害+{Amount}%。",
+
+  "CHARMOD-FOOL_POWER.title": "愚者",
+  "CHARMOD-FOOL_POWER.description": "战斗结束时，从牌堆删1张牌。",
+  "CHARMOD-FOOL_POWER.smartDescription": "战斗结束时，从牌堆删{Amount}张牌。",
+
+  "CHARMOD-SLEEP_ON_THORNS_POWER.title": "卧薪尝胆",
+  "CHARMOD-SLEEP_ON_THORNS_POWER.description": "每回合开始时，获得1层聚能。",
+  "CHARMOD-SLEEP_ON_THORNS_POWER.smartDescription": "每回合开始时，获得{Amount}层聚能。",
+
+  "CHARMOD-ASH_CLOAK_POWER.title": "灰斗篷",
+  "CHARMOD-ASH_CLOAK_POWER.description": "每当一张牌被消耗，获得1点格挡。",
+  "CHARMOD-ASH_CLOAK_POWER.smartDescription": "每当一张牌被消耗，获得{Amount}点格挡。"
+}
