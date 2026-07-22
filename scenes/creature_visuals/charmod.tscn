@@ -10,7 +10,7 @@ script = ExtResource("1_script")
 unique_name_in_owner = true
 
 [node name="CharSprite" type="Sprite2D" parent="Visuals"]
-position = Vector2(-7.6293945e-06, -100)
+position = Vector2(20, -140)
 texture = ExtResource("2_img")
 
 [node name="Bounds" type="Control" parent="."]

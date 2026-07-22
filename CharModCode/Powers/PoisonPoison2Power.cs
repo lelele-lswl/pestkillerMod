@@ -31,6 +31,10 @@ public sealed class PoisonPoison2Power : CharModPower
 
     public override async Task AfterCardDrawn(PlayerChoiceContext choiceContext, CardModel card, bool fromHandDraw)
     {
+        if (card.Owner.Creature != base.Owner)
+        {
+            return;
+        }
         var data = GetInternalData<Data>();
         data.cardDrawCount++;
         if (data.cardDrawCount >= 1)
@@ -42,6 +46,10 @@ public sealed class PoisonPoison2Power : CharModPower
 
     public override async Task AfterCardExhausted(PlayerChoiceContext choiceContext, CardModel card, bool causedByEthereal)
     {
+        if (card.Owner.Creature != base.Owner)
+        {
+            return;
+        }
         var data = GetInternalData<Data>();
         data.cardExhaustCount++;
         if (data.cardExhaustCount >= 1)
@@ -53,6 +61,10 @@ public sealed class PoisonPoison2Power : CharModPower
 
     public override async Task AfterCardPlayed(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
+        if (cardPlay.Card.Owner != base.Owner.Player)
+        {
+            return;
+        }
         var data = GetInternalData<Data>();
         data.cardPlayCount++;
         if (data.cardPlayCount >= 1)

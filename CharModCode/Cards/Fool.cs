@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
+using MegaCrit.Sts2.Core.HoverTips;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
 using CharMod.CharModCode.Powers;
 
@@ -17,6 +18,9 @@ public sealed class Fool : CharModCard
         {
             new DynamicVar(_removeCountKey, 1m)
         };
+
+    protected override IEnumerable<IHoverTip> ExtraHoverTips =>
+        new IHoverTip[] { HoverTipFactory.FromPower<FoolPower>() };
 
     public Fool()
         : base(1, CardType.Power, CardRarity.Rare, TargetType.Self)

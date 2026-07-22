@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cds2qrsasm7hx"
-path="res://.godot/imported/hundred_slash.png-8c1faa5026fb43544f59035a960271d5.ctex"
+uid="uid://cwba1dvt3etli"
+path="res://.godot/imported/gene_mutation.png-01a46da22fdb554948a14b97e5174b87.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://pestkiller/images/card_portraits/big/hundred_slash.png"
-dest_files=["res://.godot/imported/hundred_slash.png-8c1faa5026fb43544f59035a960271d5.ctex"]
+source_file="res://pestkiller/images/card_portraits/big/gene_mutation.png"
+dest_files=["res://.godot/imported/gene_mutation.png-01a46da22fdb554948a14b97e5174b87.ctex"]
 
 [params]
 
@@ -36,5 +36,5 @@ process/premult_alpha=false
 process/normal_map_invert_y=false
 process/hdr_as_srgb=false
 process/hdr_clamp_exposure=false
-process/size_limit=500
+process/size_limit=0
 detect_3d/compress_to=1

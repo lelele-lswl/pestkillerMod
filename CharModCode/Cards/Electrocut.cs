@@ -33,7 +33,7 @@ public sealed class Electrocut : CharModCard
         ArgumentNullException.ThrowIfNull(cardPlay.Target, "cardPlay.Target");
         if (cardPlay.Target.IsDead) return;
 
-        PathwayPower pathway = cardPlay.Target.GetPower<PathwayPower>();
+        PathwayPower? pathway = cardPlay.Target.GetPower<PathwayPower>();
         int stacks = pathway != null ? (int)pathway.Amount : 0;
 
         if (stacks > 0)
@@ -45,7 +45,7 @@ public sealed class Electrocut : CharModCard
                 .WithHitFx("vfx/vfx_attack_lightning")
                 .Execute(choiceContext);
 
-            await pathway.Trigger(choiceContext, cardPlay.Target, base.Owner.Creature);
+            await pathway!.Trigger(choiceContext, cardPlay.Target, base.Owner.Creature);
         }
     }
 

@@ -33,7 +33,7 @@ public sealed class FocusPower : CharModPower
             return 1m;
         }
 
-        decimal multiplier = 1m + 0.5m * base.Amount;
+        decimal multiplier = 1m + 0.50m * base.Amount;
         return multiplier;
     }
 

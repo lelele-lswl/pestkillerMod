@@ -16,10 +16,10 @@ public sealed class BarrenPower : CharModPower
 
     public override async Task AfterPowerAmountChanged(PlayerChoiceContext choiceContext, PowerModel power, decimal amount, Creature? applier, CardModel? cardSource)
     {
-        if (power is PoisonPower && power.Owner != null && power.Owner.IsEnemy)
+        if (power is PoisonPower && power.Owner != null && power.Owner.IsEnemy && applier == base.Owner)
         {
             Flash();
-            await CardPileCmd.Draw(choiceContext, base.Amount, base.Owner.Player);
+            await CardPileCmd.Draw(choiceContext, base.Amount, base.Owner.Player!);
         }
     }
 }

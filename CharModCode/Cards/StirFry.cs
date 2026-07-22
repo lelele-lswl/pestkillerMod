@@ -5,6 +5,7 @@ using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.Factories;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
+using MegaCrit.Sts2.Core.HoverTips;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
 using MegaCrit.Sts2.Core.Models;
 
@@ -18,6 +19,9 @@ public sealed class StirFry : CharModCard
             new CardsVar(1)
         };
 
+    protected override IEnumerable<IHoverTip> ExtraHoverTips =>
+        new IHoverTip[] { HoverTipFactory.FromCard<FreshMeat>() };
+
     public StirFry()
         : base(0, CardType.Skill, CardRarity.Uncommon, TargetType.Self)
     {
@@ -27,7 +31,7 @@ public sealed class StirFry : CharModCard
     {
         await CardPileCmd.Draw(choiceContext, base.DynamicVars.Cards.BaseValue, base.Owner);
 
-        CardModel freshMeatInHand = base.Owner.PlayerCombatState.Hand.Cards.FirstOrDefault(c => c is FreshMeat);
+        CardModel? freshMeatInHand = base.Owner.PlayerCombatState!.Hand.Cards.FirstOrDefault(c => c is FreshMeat);
         if (freshMeatInHand == null)
         {
             CardModel freshMeat = CardFactory.GetForCombat(

@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
+using MegaCrit.Sts2.Core.HoverTips;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
 using MegaCrit.Sts2.Core.Models.Powers;
 using MegaCrit.Sts2.Core.ValueProps;
@@ -16,6 +17,9 @@ public sealed class PowerSource : CharModCard
         {
             new PowerVar<StrengthPower>(4m)
         };
+
+    protected override IEnumerable<IHoverTip> ExtraHoverTips =>
+        new IHoverTip[] { HoverTipFactory.FromPower<StrengthPower>() };
 
     public PowerSource()
         : base(2, CardType.Skill, CardRarity.Uncommon, TargetType.Self)

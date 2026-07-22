@@ -25,7 +25,7 @@ public sealed class Printer : CharModCard
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
-        CardModel selection = (await CardSelectCmd.FromHand(
+        CardModel? selection = (await CardSelectCmd.FromHand(
             prefs: new CardSelectorPrefs(base.SelectionScreenPrompt, 1),
             context: choiceContext,
             player: base.Owner,

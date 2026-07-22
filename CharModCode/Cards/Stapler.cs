@@ -19,7 +19,6 @@ public sealed class Stapler : CharModCard
         new DynamicVar[]
         {
             new DamageVar(3m, ValueProp.Move),
-            new PowerVar<PathwayPower>(1m)
         };
 
     protected override IEnumerable<IHoverTip> ExtraHoverTips =>
@@ -46,7 +45,10 @@ public sealed class Stapler : CharModCard
             .WithHitFx("vfx/vfx_attack_blunt")
             .Execute(choiceContext);
 
-        await PowerCmd.Apply<PathwayPower>(choiceContext, cardPlay.Target, xCost, base.Owner.Creature, this);
+        for (int i = 0; i < xCost; i++)
+        {
+            await PowerCmd.Apply<PathwayPower>(choiceContext, cardPlay.Target, 1m, base.Owner.Creature, this);
+        }
     }
 
     protected override void OnUpgrade()

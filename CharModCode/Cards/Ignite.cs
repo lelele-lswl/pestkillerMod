@@ -43,7 +43,7 @@ public sealed class Ignite : CharModCard
                 .FromCard(this)
                 .WithHitCount(stacks)
                 .Targeting(cardPlay.Target)
-                .WithHitFx("vfx/vfx_attack_fire")
+                .WithHitFx("vfx/vfx_molten_fist")
                 .Execute(choiceContext);
 
             if (!cardPlay.Target.IsDead && pathway != null)

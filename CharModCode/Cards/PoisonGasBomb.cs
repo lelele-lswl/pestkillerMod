@@ -35,7 +35,7 @@ public sealed class PoisonGasBomb : CharModCard
         int x = ResolveEnergyXValue();
         int poisonAmount = (int)base.DynamicVars.Poison.BaseValue * x;
 
-        foreach (Creature enemy in base.CombatState.Enemies.ToList())
+        foreach (Creature enemy in base.CombatState!.Enemies.ToList())
         {
             if (enemy.IsAlive)
             {

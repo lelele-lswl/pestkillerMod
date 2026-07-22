@@ -12,7 +12,7 @@ public sealed class Backpack : CharModCard
     protected override IEnumerable<DynamicVar> CanonicalVars =>
         new DynamicVar[]
         {
-            new CardsVar(1)
+            new CardsVar(2)
         };
 
     public override IEnumerable<CardKeyword> CanonicalKeywords =>

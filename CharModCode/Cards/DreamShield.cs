@@ -26,7 +26,7 @@ public sealed class DreamShield : CharModCard
         new[] { CardKeyword.Retain };
 
     public DreamShield()
-        : base(2, CardType.Skill, CardRarity.Rare, TargetType.Self)
+        : base(2, CardType.Skill, CardRarity.Uncommon, TargetType.Self)
     {
     }
 
@@ -46,7 +46,7 @@ public sealed class DreamShield : CharModCard
             3,
             base.Owner.RunState.Rng.CombatCardGeneration).ToList();
 
-        CardModel selected = await CardSelectCmd.FromChooseACardScreen(
+        CardModel? selected = await CardSelectCmd.FromChooseACardScreen(
             choiceContext, choices, base.Owner, canSkip: false);
 
         if (selected != null)

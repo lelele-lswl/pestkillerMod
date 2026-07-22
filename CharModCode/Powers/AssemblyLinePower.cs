@@ -48,7 +48,7 @@ public sealed class AssemblyLinePower : CharModPower
                 if (threshold > 0 && data.exhaustCount >= threshold)
                 {
                     data.exhaustCount = 0;
-                    await CardPileCmd.Draw(choiceContext, 1, base.Owner.Player);
+                    await CardPileCmd.Draw(choiceContext, 1, base.Owner.Player!);
                 }
             }
         }
@@ -64,7 +64,7 @@ public sealed class AssemblyLinePower : CharModPower
             while (threshold > 0 && data.exhaustCount >= threshold)
             {
                 data.exhaustCount -= threshold;
-                await CardPileCmd.Draw(choiceContext, 1, base.Owner.Player);
+                await CardPileCmd.Draw(choiceContext, 1, base.Owner.Player!);
             }
             data.etherealCount = 0;
         }

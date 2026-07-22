@@ -33,7 +33,7 @@ public sealed class EndlessLife : CharModCard
     {
         await DamageCmd.Attack(base.DynamicVars.CalculatedDamage)
             .FromCard(this)
-            .Targeting(cardPlay.Target)
+            .Targeting(cardPlay.Target!)
             .WithHitFx("vfx/vfx_attack_slash")
             .Execute(choiceContext);
     }

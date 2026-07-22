@@ -21,7 +21,7 @@ public sealed class BlackFlash : CharModCard
     public override bool GainsBlock => true;
 
     public BlackFlash()
-        : base(1, CardType.Skill, CardRarity.Uncommon, TargetType.Self)
+        : base(1, CardType.Skill, CardRarity.Common, TargetType.Self)
     {
     }
 

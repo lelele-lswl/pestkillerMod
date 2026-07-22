@@ -1,0 +1,46 @@
+[gd_scene load_steps=3 format=3 uid="uid://bd7cvh8d3ofcy"]
+
+[ext_resource type="Script" uid="uid://omr1hbxtoncc" path="res://CharModCode/Scenes/CharModRestSite.cs" id="1_script"]
+[ext_resource type="Texture2D" uid="uid://47yy8d3rokxe" path="res://pic/pestkiller.png" id="2_img"]
+
+[node name="CharModRestSite" type="Node2D"]
+position = Vector2(0, 42)
+script = ExtResource("1_script")
+
+[node name="Visuals" type="Node2D" parent="."]
+unique_name_in_owner = true
+position = Vector2(39, 1)
+scale = Vector2(1.7196907, 1.7773112)
+
+[node name="CharSprite" type="Sprite2D" parent="Visuals"]
+position = Vector2(37.21599, -19.13002)
+scale = Vector2(1.1954199, 1.025058)
+texture = ExtResource("2_img")
+
+[node name="ControlRoot" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+
+[node name="Hitbox" type="Control" parent="ControlRoot"]
+unique_name_in_owner = true
+anchors_preset = 0
+offset_left = -150.0
+offset_top = -350.0
+offset_right = 270.0
+offset_bottom = 320.0
+
+[node name="ThoughtBubbleRight" type="Control" parent="ControlRoot"]
+unique_name_in_owner = true
+anchors_preset = 0
+offset_left = 210.0
+offset_top = -320.0
+offset_right = 210.0
+offset_bottom = -320.0
+
+[node name="ThoughtBubbleLeft" type="Control" parent="ControlRoot"]
+unique_name_in_owner = true
+anchors_preset = 0
+offset_left = -75.0
+offset_top = -325.0
+offset_right = -75.0
+offset_bottom = -325.0

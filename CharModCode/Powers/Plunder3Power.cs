@@ -18,8 +18,8 @@ public sealed class Plunder3Power : CharModPower
     {
         for (int i = 0; i < base.Amount; i++)
         {
-            RelicModel relic = RelicFactory.PullNextRelicFromFront(base.Owner.Player);
-            await RelicCmd.Obtain(relic.ToMutable(), base.Owner.Player);
+            RelicModel relic = RelicFactory.PullNextRelicFromFront(base.Owner.Player!);
+            await RelicCmd.Obtain(relic.ToMutable(), base.Owner.Player!);
         }
     }
 }

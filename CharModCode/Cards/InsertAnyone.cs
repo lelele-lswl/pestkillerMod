@@ -39,7 +39,7 @@ public sealed class InsertAnyone : CharModCard
             .WithHitFx("vfx/vfx_attack_slash")
             .Execute(choiceContext);
 
-        PathwayPower pathway = cardPlay.Target.GetPower<PathwayPower>();
+        PathwayPower? pathway = cardPlay.Target.GetPower<PathwayPower>();
         if (pathway != null)
         {
             await pathway.Trigger(choiceContext, cardPlay.Target, base.Owner.Creature);

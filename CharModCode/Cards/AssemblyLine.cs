@@ -24,7 +24,7 @@ public sealed class AssemblyLine : CharModCard
         new[] { CardKeyword.Innate };
 
     public AssemblyLine()
-        : base(1, CardType.Power, CardRarity.Rare, TargetType.Self)
+        : base(1, CardType.Power, CardRarity.Uncommon, TargetType.Self)
     {
     }
 

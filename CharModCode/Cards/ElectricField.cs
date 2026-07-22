@@ -2,12 +2,16 @@ using System.Threading.Tasks;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
+using MegaCrit.Sts2.Core.HoverTips;
 using CharMod.CharModCode.Powers;
 
 namespace CharMod.CharModCode.Cards;
 
 public sealed class ElectricField : CharModCard
 {
+    protected override IEnumerable<IHoverTip> ExtraHoverTips =>
+        new IHoverTip[] { HoverTipFactory.FromPower<ElectricFieldPower>() };
+
     public ElectricField()
         : base(1, CardType.Power, CardRarity.Rare, TargetType.Self)
     {

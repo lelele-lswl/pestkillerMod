@@ -23,7 +23,7 @@ public sealed class ElectricFieldPower : CharModPower
         foreach (var enemy in combatState.Enemies.ToList())
         {
             if (enemy.IsDead) continue;
-            PathwayPower pathway = enemy.GetPower<PathwayPower>();
+            PathwayPower? pathway = enemy.GetPower<PathwayPower>();
             if (pathway != null)
             {
                 await pathway.Trigger(null, enemy, base.Owner);

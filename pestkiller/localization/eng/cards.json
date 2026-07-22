@@ -10,9 +10,9 @@
   "SMALL_POISON.description": "给予 {PoisonPower:diff()} 层中毒。",
 
   "CHARMOD-ABSORB.title": "吸收",
-  "CHARMOD-ABSORB.description": "获得 {IntangiblePower:diff()} 层无实体，{FocusPower:diff()} 层聚能。消耗。",
+  "CHARMOD-ABSORB.description": "获得 {IntangiblePower:diff()} 层无实体，{FocusPower:diff()} 层聚能。",
   "ABSORB.title": "吸收",
-  "ABSORB.description": "获得 {IntangiblePower:diff()} 层无实体，{FocusPower:diff()} 层聚能。消耗。",
+  "ABSORB.description": "获得 {IntangiblePower:diff()} 层无实体，{FocusPower:diff()} 层聚能。",
   "CHARMOD-CHAR_MOD_DEFEND.title": "防御",
   "CHARMOD-CHAR_MOD_DEFEND.description": "获得 {Block:diff()} 点格挡。",
   "CHAR_MOD_DEFEND.title": "防御",
@@ -82,9 +82,9 @@
   "ANESTHETIC.title": "麻醉剂",
   "ANESTHETIC.description": "造成 {Damage:diff()} 点伤害。\n眩晕所有敌人。",
   "CHARMOD-RHAPSODY.title": "狂想曲",
-  "CHARMOD-RHAPSODY.description": "造成 {Damage:diff()} 点伤害。\n施加 {PoisonPower:diff()} 层中毒、{WeakPower:diff()} 层虚弱、{VulnerablePower:diff()} 层易伤、{PathwayPower:diff()} 层通路。\n消耗。",
+  "CHARMOD-RHAPSODY.description": "造成 {Damage:diff()} 点伤害。\n施加 {PoisonPower:diff()} 层中毒、{WeakPower:diff()} 层虚弱、{VulnerablePower:diff()} 层易伤、{PathwayPower:diff()} 层通路。",
   "RHAPSODY.title": "狂想曲",
-  "RHAPSODY.description": "造成 {Damage:diff()} 点伤害。\n施加 {PoisonPower:diff()} 层中毒、{WeakPower:diff()} 层虚弱、{VulnerablePower:diff()} 层易伤、{PathwayPower:diff()} 层通路。\n消耗。",
+  "RHAPSODY.description": "造成 {Damage:diff()} 点伤害。\n施加 {PoisonPower:diff()} 层中毒、{WeakPower:diff()} 层虚弱、{VulnerablePower:diff()} 层易伤、{PathwayPower:diff()} 层通路。",
   "CHARMOD-ENDLESS_LIFE.title": "生生不息",
   "CHARMOD-ENDLESS_LIFE.description": "造成 {CalculatedDamage:diff()} 点伤害。\n本回合每生成一张牌，伤害+{ExtraDamage:diff()}。",
   "ENDLESS_LIFE.title": "生生不息",
@@ -302,9 +302,9 @@
   "FLYING_THUNDER_GOD.description": "抽 {Cards:diff()} 张牌。",
 
   "CHARMOD-DREAM_SHIELD.title": "梦之盾",
-  "CHARMOD-DREAM_SHIELD.description": "获得 {Block:diff()} 点格挡。从3张全职业稀有牌中选择1张加入手牌。",
+  "CHARMOD-DREAM_SHIELD.description": "获得 {Block:diff()} 点格挡。从3张稀有牌中选择1张加入手牌。",
   "DREAM_SHIELD.title": "梦之盾",
-  "DREAM_SHIELD.description": "获得 {Block:diff()} 点格挡。从3张全职业稀有牌中选择1张加入手牌。",
+  "DREAM_SHIELD.description": "获得 {Block:diff()} 点格挡。从3张稀有牌中选择1张加入手牌。",
 
   "CHARMOD-BARREN.title": "片草不生",
   "CHARMOD-BARREN.description": "每当给予1次中毒，抽 {Cards:diff()} 张牌。",
@@ -336,10 +336,10 @@
   "HARD_STAND.title": "硬撑",
   "HARD_STAND.description": "获得 {Block:diff()} 点格挡。添加 {WoundCount:diff()} 张伤口进入手牌。",
 
-  "CHARMOD-HUNDRED_SLASH.title": "百人斩",
-  "CHARMOD-HUNDRED_SLASH.description": "X费。造成 {Damage:diff()} 点伤害并给予 {VulnerablePower:diff()} 层易伤，重复X次。",
-  "HUNDRED_SLASH.title": "百人斩",
-  "HUNDRED_SLASH.description": "X费。造成 {Damage:diff()} 点伤害并给予 {VulnerablePower:diff()} 层易伤，重复X次。",
+  "CHARMOD-GENE_MUTATION.title": "Gene Mutation",
+  "CHARMOD-GENE_MUTATION.description": "Choose up to {CardsToTransform:diff()} cards in your hand and Transform them into random cards. Choose {CardsToExhaust:diff()} card in your hand to Exhaust.",
+  "GENE_MUTATION.title": "Gene Mutation",
+  "GENE_MUTATION.description": "Choose up to {CardsToTransform:diff()} cards in your hand and Transform them into random cards. Choose {CardsToExhaust:diff()} card in your hand to Exhaust.",
 
   "CHARMOD-PRINTER.title": "打印机",
   "CHARMOD-PRINTER.description": "选择一张技能牌或能力牌，将其 {Cards:diff()} 张复制品加入手牌。",
@@ -369,19 +369,19 @@
   "NIOH_SHIELD.description": "获得 {Block:diff()} 点格挡 {Repeat:diff()} 次。给予所有敌人 {WeakPower:diff()} 层虚弱。",
 
   "CHARMOD-BURN_OUT.title": "燃尽",
-  "CHARMOD-BURN_OUT.description": "失去 {HpLoss:diff()} 点生命。抽 {Cards:diff()} 张牌。获得 {StrengthPower:diff()} 点力量，{DexterityPower:diff()} 点敏捷。消耗。",
+  "CHARMOD-BURN_OUT.description": "失去 {HpLoss:diff()} 点生命。抽 {Cards:diff()} 张牌。获得 {StrengthPower:diff()} 点力量，{DexterityPower:diff()} 点敏捷。",
   "BURN_OUT.title": "燃尽",
-  "BURN_OUT.description": "失去 {HpLoss:diff()} 点生命。抽 {Cards:diff()} 张牌。获得 {StrengthPower:diff()} 点力量，{DexterityPower:diff()} 点敏捷。消耗。",
+  "BURN_OUT.description": "失去 {HpLoss:diff()} 点生命。抽 {Cards:diff()} 张牌。获得 {StrengthPower:diff()} 点力量，{DexterityPower:diff()} 点敏捷。",
 
   "CHARMOD-BACKPACK.title": "背包",
-  "CHARMOD-BACKPACK.description": "抽 {Cards:diff()} 张牌。消耗。",
+  "CHARMOD-BACKPACK.description": "抽 {Cards:diff()} 张牌。",
   "BACKPACK.title": "背包",
-  "BACKPACK.description": "抽 {Cards:diff()} 张牌。消耗。",
+  "BACKPACK.description": "抽 {Cards:diff()} 张牌。",
 
   "CHARMOD-OVERLORD_EGG.title": "霸王之卵",
-  "CHARMOD-OVERLORD_EGG.description": "抽 1 张牌。获得 {StrengthPower:diff()} 点力量，{DexterityPower:diff()} 点敏捷。消耗。",
+  "CHARMOD-OVERLORD_EGG.description": "抽 1 张牌。获得 {StrengthPower:diff()} 点力量，{DexterityPower:diff()} 点敏捷。",
   "OVERLORD_EGG.title": "霸王之卵",
-  "OVERLORD_EGG.description": "抽 1 张牌。获得 {StrengthPower:diff()} 点力量，{DexterityPower:diff()} 点敏捷。消耗。",
+  "OVERLORD_EGG.description": "抽 1 张牌。获得 {StrengthPower:diff()} 点力量，{DexterityPower:diff()} 点敏捷。",
 
   "CHARMOD-DEFY_DEATH.title": "蔑视死亡",
   "CHARMOD-DEFY_DEATH.description": "失去 {MaxHpLoss:diff()} 点最大生命。获得 {Energy:diff()} 点能量。",
@@ -457,12 +457,17 @@
   "BATTLE_TALENT.description": "失去 1 点生命。获得 {DexterityPower:diff()} 点敏捷。升级后额外获得1点力量、1点聚能。",
 
   "CHARMOD-ULTIMATE_FORGING2.title": "究极锻造2",
-  "CHARMOD-ULTIMATE_FORGING2.description": "获得 {Block:diff()} 点格挡。将所有防御牌变化为究极防御。消耗。",
+  "CHARMOD-ULTIMATE_FORGING2.description": "获得 {Block:diff()} 点格挡。将所有防御牌变化为究极防御。",
   "ULTIMATE_FORGING2.title": "究极锻造2",
-  "ULTIMATE_FORGING2.description": "获得 {Block:diff()} 点格挡。将所有防御牌变化为究极防御。消耗。",
+  "ULTIMATE_FORGING2.description": "获得 {Block:diff()} 点格挡。将所有防御牌变化为究极防御。",
 
   "CHARMOD-FREE_HAND.selectionScreenPrompt": "选择一张牌",
   "FREE_HAND.title": "自由之手",
   "FREE_HAND.description": "从抽牌堆和弃牌堆各选1张牌加入手牌。",
-  "FREE_HAND.selectionScreenPrompt": "选择一张牌"
+  "FREE_HAND.selectionScreenPrompt": "选择一张牌",
+
+  "CHARMOD-ANTIBIOTIC.title": "Antibiotic",
+  "CHARMOD-ANTIBIOTIC.description": "At the start of your next turn, Exhaust all Status cards in your piles and lose 1 HP for each. Also triggers when this card is Exhausted or Transformed.",
+  "ANTIBIOTIC.title": "Antibiotic",
+  "ANTIBIOTIC.description": "At the start of your next turn, Exhaust all Status cards in your piles and lose 1 HP for each. Also triggers when this card is Exhausted or Transformed."
 }

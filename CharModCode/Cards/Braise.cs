@@ -6,6 +6,7 @@ using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.Entities.Powers;
 using MegaCrit.Sts2.Core.Factories;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
+using MegaCrit.Sts2.Core.HoverTips;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
 using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Models.Powers;
@@ -21,6 +22,13 @@ public sealed class Braise : CharModCard
             new PowerVar<StrengthPower>(1m)
         };
 
+    protected override IEnumerable<IHoverTip> ExtraHoverTips =>
+        new IHoverTip[]
+        {
+            HoverTipFactory.FromPower<StrengthPower>(),
+            HoverTipFactory.FromCard<FreshMeat>(),
+        };
+
     public Braise()
         : base(1, CardType.Skill, CardRarity.Uncommon, TargetType.Self)
     {
@@ -31,7 +39,7 @@ public sealed class Braise : CharModCard
         await CardPileCmd.Draw(choiceContext, base.DynamicVars.Cards.BaseValue, base.Owner);
         await PowerCmd.Apply<StrengthPower>(choiceContext, base.Owner.Creature, base.DynamicVars.Strength.BaseValue, base.Owner.Creature, this);
 
-        CardModel freshMeatInHand = base.Owner.PlayerCombatState.Hand.Cards.FirstOrDefault(c => c is FreshMeat);
+        CardModel? freshMeatInHand = base.Owner.PlayerCombatState!.Hand.Cards.FirstOrDefault(c => c is FreshMeat);
         if (freshMeatInHand == null)
         {
             CardModel freshMeat = CardFactory.GetForCombat(
@@ -46,6 +54,7 @@ public sealed class Braise : CharModCard
 
     protected override void OnUpgrade()
     {
-        base.EnergyCost.UpgradeBy(-1);
+        // 升级效果：抽牌 +1，同时更新 DynamicVar 以便 {Cards:diff()} 文本高亮变化
+        base.DynamicVars.Cards.UpgradeValueBy(1m);
     }
 }

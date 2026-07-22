@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
+using MegaCrit.Sts2.Core.HoverTips;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
 using MegaCrit.Sts2.Core.Models.Powers;
 using CharMod.CharModCode.Powers;
@@ -17,6 +18,9 @@ public sealed class Endurance : CharModCard
             new PowerVar<CharMod.CharModCode.Powers.FocusPower>(1m),
             new CardsVar(1)
         };
+
+    protected override IEnumerable<IHoverTip> ExtraHoverTips =>
+        new IHoverTip[] { HoverTipFactory.FromPower<CharMod.CharModCode.Powers.FocusPower>() };
 
     public Endurance()
         : base(1, CardType.Skill, CardRarity.Common, TargetType.Self)

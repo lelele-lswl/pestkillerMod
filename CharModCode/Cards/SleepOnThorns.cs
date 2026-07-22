@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
+using MegaCrit.Sts2.Core.HoverTips;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
 using CharMod.CharModCode.Powers;
 
@@ -15,6 +16,9 @@ public sealed class SleepOnThorns : CharModCard
         {
             new PowerVar<SleepOnThornsPower>(1m)
         };
+
+    protected override IEnumerable<IHoverTip> ExtraHoverTips =>
+        new IHoverTip[] { HoverTipFactory.FromPower<SleepOnThornsPower>() };
 
     public SleepOnThorns()
         : base(1, CardType.Power, CardRarity.Uncommon, TargetType.Self)

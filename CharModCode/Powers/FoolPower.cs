@@ -15,7 +15,7 @@ public sealed class FoolPower : CharModPower
     {
         for (int i = 0; i < (int)base.Amount; i++)
         {
-            room.AddExtraReward(base.Owner.Player, new CardRemovalReward(base.Owner.Player));
+            room.AddExtraReward(base.Owner.Player!, new CardRemovalReward(base.Owner.Player!));
         }
         return Task.CompletedTask;
     }

@@ -26,7 +26,7 @@ public sealed class Steal : CharModCard
     {
         await DamageCmd.Attack(base.DynamicVars.Damage.BaseValue)
             .FromCard(this)
-            .Targeting(cardPlay.Target)
+            .Targeting(cardPlay.Target!)
             .WithHitFx("vfx/vfx_attack_slash")
             .Execute(choiceContext);
         await PlayerCmd.GainGold(base.DynamicVars.Gold.BaseValue, base.Owner);

@@ -41,15 +41,16 @@ public sealed class BranchPower : CharModPower
             data.exhaustCount -= threshold;
             Flash();
 
+            var player = base.Owner.Player!;
             var cards = CardFactory.GetForCombat(
-                base.Owner.Player,
-                base.Owner.Player.Character.CardPool.GetUnlockedCards(
-                    base.Owner.Player.UnlockState,
-                    base.Owner.Player.RunState.CardMultiplayerConstraint),
+                player,
+                player.Character.CardPool.GetUnlockedCards(
+                    player.UnlockState,
+                    player.RunState.CardMultiplayerConstraint),
                 1,
-                base.Owner.Player.RunState.Rng.CombatCardGeneration).ToList();
+                player.RunState.Rng.CombatCardGeneration).ToList();
 
-            await CardPileCmd.AddGeneratedCardsToCombat(cards, PileType.Hand, base.Owner.Player);
+            await CardPileCmd.AddGeneratedCardsToCombat(cards, PileType.Hand, player);
         }
     }
 }

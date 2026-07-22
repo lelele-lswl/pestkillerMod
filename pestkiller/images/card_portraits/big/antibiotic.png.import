@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cgl56pxln0viw"
-path="res://.godot/imported/hundred_slash.png-625cf7363e1401f7c5cde082397759ea.ctex"
+uid="uid://chujmvt4ttkbl"
+path="res://.godot/imported/antibiotic.png-a6a34e0fef003ada43c14657146f1c69.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://pestkiller/images/card_portraits/hundred_slash.png"
-dest_files=["res://.godot/imported/hundred_slash.png-625cf7363e1401f7c5cde082397759ea.ctex"]
+source_file="res://pestkiller/images/card_portraits/big/antibiotic.png"
+dest_files=["res://.godot/imported/antibiotic.png-a6a34e0fef003ada43c14657146f1c69.ctex"]
 
 [params]
 
@@ -36,5 +36,5 @@ process/premult_alpha=false
 process/normal_map_invert_y=false
 process/hdr_as_srgb=false
 process/hdr_clamp_exposure=false
-process/size_limit=500
+process/size_limit=0
 detect_3d/compress_to=1

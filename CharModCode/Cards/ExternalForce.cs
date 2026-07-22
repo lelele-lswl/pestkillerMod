@@ -5,6 +5,7 @@ using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.Entities.Powers;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
+using MegaCrit.Sts2.Core.HoverTips;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
 using MegaCrit.Sts2.Core.ValueProps;
 using CharMod.CharModCode.Powers;
@@ -18,6 +19,9 @@ public sealed class ExternalForce : CharModCard
         {
             new DamageVar(8m, ValueProp.Move)
         };
+
+    protected override IEnumerable<IHoverTip> ExtraHoverTips =>
+        new IHoverTip[] { HoverTipFactory.FromPower<PathwayPower>() };
 
     public ExternalForce()
         : base(1, CardType.Attack, CardRarity.Common, TargetType.AnyEnemy)
@@ -34,7 +38,7 @@ public sealed class ExternalForce : CharModCard
             .WithHitFx("vfx/vfx_attack_blunt")
             .Execute(choiceContext);
 
-        PathwayPower pathway = cardPlay.Target.GetPower<PathwayPower>();
+        PathwayPower? pathway = cardPlay.Target.GetPower<PathwayPower>();
         if (pathway != null)
         {
             await pathway.Trigger(choiceContext, cardPlay.Target, base.Owner.Creature);

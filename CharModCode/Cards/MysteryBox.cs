@@ -6,6 +6,7 @@ using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.Factories;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
+using MegaCrit.Sts2.Core.HoverTips;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
 using MegaCrit.Sts2.Core.Models.Powers;
 using MegaCrit.Sts2.Core.ValueProps;
@@ -18,6 +19,15 @@ public sealed class MysteryBox : CharModCard
     protected override IEnumerable<DynamicVar> CanonicalVars =>
         new DynamicVar[] { };
 
+    protected override IEnumerable<IHoverTip> ExtraHoverTips =>
+        new IHoverTip[]
+        {
+            HoverTipFactory.FromPower<StrengthPower>(),
+            HoverTipFactory.FromPower<DexterityPower>(),
+            HoverTipFactory.FromPower<CharMod.CharModCode.Powers.FocusPower>(),
+            HoverTipFactory.FromPower<PathwayPower>(),
+        };
+
     public override IEnumerable<CardKeyword> CanonicalKeywords =>
         new[] { CardKeyword.Exhaust };
 
@@ -28,7 +38,8 @@ public sealed class MysteryBox : CharModCard
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
-        int roll = base.Owner.RunState.Rng.Niche.NextInt(0, 5);
+        // NextInt 上界为开区间：0-5 共 6 种结果（原 NextInt(0, 5) 导致 case 5 永远不触发）
+        int roll = base.Owner.RunState.Rng.Niche.NextInt(0, 6);
 
         switch (roll)
         {
@@ -50,7 +61,7 @@ public sealed class MysteryBox : CharModCard
                 break;
             case 5:
                 await PowerCmd.Apply<CharMod.CharModCode.Powers.FocusPower>(choiceContext, base.Owner.Creature, 3m, base.Owner.Creature, this);
-                foreach (var enemy in base.CombatState.Enemies.ToList())
+                foreach (var enemy in base.CombatState!.Enemies.ToList())
                 {
                     await PowerCmd.Apply<PathwayPower>(choiceContext, enemy, 2m, base.Owner.Creature, this);
                 }

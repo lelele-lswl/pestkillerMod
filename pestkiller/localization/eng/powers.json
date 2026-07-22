@@ -56,7 +56,7 @@
   "CHARMOD-ELECTRIC_FIELD_POWER.smartDescription": "每回合开始时，激发所有敌人身上的通路。",
 
   "CHARMOD-ASSEMBLY_LINE_POWER.title": "流水线",
-  "CHARMOD-ASSEMBLY_LINE_POWER.description": "每消耗{Amount}张牌，抽1张牌。",
+  "CHARMOD-ASSEMBLY_LINE_POWER.description": "每消耗2张牌，抽1张牌。",
   "CHARMOD-ASSEMBLY_LINE_POWER.smartDescription": "每消耗{Amount}张牌，抽1张牌。",
 
   "CHARMOD-FOCUS_POWER.title": "聚能",
@@ -81,5 +81,9 @@
 
   "CHARMOD-ASH_CLOAK_POWER.title": "灰烬披风",
   "CHARMOD-ASH_CLOAK_POWER.description": "每当一张牌被消耗，获得1点格挡。",
-  "CHARMOD-ASH_CLOAK_POWER.smartDescription": "每当一张牌被消耗，获得{Amount}点格挡。"
+  "CHARMOD-ASH_CLOAK_POWER.smartDescription": "每当一张牌被消耗，获得{Amount}点格挡。",
+
+  "CHARMOD-ANTIBIOTIC_POWER.title": "Antibiotic",
+  "CHARMOD-ANTIBIOTIC_POWER.description": "At the start of this turn, Exhaust all Status cards in your piles and lose 1 HP for each, then remove this power.",
+  "CHARMOD-ANTIBIOTIC_POWER.smartDescription": "At the start of this turn, Exhaust all Status cards in your piles and lose 1 HP for each, then remove this power."
 }

@@ -22,8 +22,8 @@ public sealed class PathwayPower : CharModPower
         PlayerChoiceContext ctx = choiceContext ?? new BlockingPlayerChoiceContext();
 
         Flash();
-        await CardPileCmd.Draw(ctx, stacks, player.Player);
-        await PlayerCmd.GainEnergy(stacks, player.Player);
+        await CardPileCmd.Draw(ctx, stacks, player.Player!);
+        await PlayerCmd.GainEnergy(stacks, player.Player!);
         if (owner.IsDead) return;
         await CreatureCmd.Damage(ctx, owner, stacks * 8m, ValueProp.Unpowered, player);
     }

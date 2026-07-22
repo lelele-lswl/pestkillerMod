@@ -36,7 +36,7 @@ public sealed class MechanizationPower : CharModPower
         if (data.drawCount % 6 == 0)
         {
             Flash();
-            await CardPileCmd.Draw(choiceContext, base.Amount, base.Owner.Player);
+            await CardPileCmd.Draw(choiceContext, base.Amount, base.Owner.Player!);
         }
     }
 }

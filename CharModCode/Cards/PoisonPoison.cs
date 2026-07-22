@@ -16,7 +16,7 @@ public sealed class PoisonPoison : CharModCard
     protected override IEnumerable<DynamicVar> CanonicalVars =>
         new DynamicVar[]
         {
-            new PowerVar<PoisonPower>(2m)
+            new PowerVar<PoisonPower>(3m)
         };
 
     protected override IEnumerable<IHoverTip> ExtraHoverTips =>

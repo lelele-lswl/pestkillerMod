@@ -22,7 +22,7 @@ public sealed class EvolvePower : CharModPower
         if (card.Owner.Creature == base.Owner && card.Type == CardType.Status)
         {
             Flash();
-            await CardPileCmd.Draw(choiceContext, base.Amount, base.Owner.Player);
+            await CardPileCmd.Draw(choiceContext, base.Amount, base.Owner.Player!);
         }
     }
 }

@@ -32,11 +32,11 @@ public sealed class PhysicsSword : CharModCard
     {
         await DamageCmd.Attack(base.DynamicVars.Damage.BaseValue)
             .FromCard(this)
-            .Targeting(cardPlay.Target)
+            .Targeting(cardPlay.Target!)
             .WithHitFx("vfx/vfx_attack_slash")
             .Execute(choiceContext);
 
-        await PowerCmd.Apply<PathwayPower>(choiceContext, cardPlay.Target, base.DynamicVars["PathwayPower"].BaseValue, base.Owner.Creature, this);
+        await PowerCmd.Apply<PathwayPower>(choiceContext, cardPlay.Target!, base.DynamicVars["PathwayPower"].BaseValue, base.Owner.Creature, this);
         await CardPileCmd.Draw(choiceContext, base.DynamicVars.Cards.BaseValue, base.Owner);
     }
 

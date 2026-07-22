@@ -21,6 +21,7 @@ public sealed class AshCloak : CharModCard
     protected override IEnumerable<IHoverTip> ExtraHoverTips =>
         new IHoverTip[]
         {
+            HoverTipFactory.FromPower<AshCloakPower>(),
             HoverTipFactory.FromKeyword(CardKeyword.Exhaust),
             HoverTipFactory.Static(StaticHoverTip.Block)
         };

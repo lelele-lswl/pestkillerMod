@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
+using MegaCrit.Sts2.Core.HoverTips;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
 using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Models.Cards;
@@ -18,6 +19,9 @@ public sealed class NuclearFusion : CharModCard
         {
             new DamageVar(80m, ValueProp.Move)
         };
+
+    protected override IEnumerable<IHoverTip> ExtraHoverTips =>
+        new IHoverTip[] { HoverTipFactory.FromCard<Debris>() };
 
     public NuclearFusion()
         : base(4, CardType.Attack, CardRarity.Rare, TargetType.AnyEnemy)
@@ -43,7 +47,7 @@ public sealed class NuclearFusion : CharModCard
 
         await DamageCmd.Attack(base.DynamicVars.Damage.BaseValue)
             .FromCard(this)
-            .Targeting(cardPlay.Target)
+            .Targeting(cardPlay.Target!)
             .WithHitFx("vfx/vfx_attack_blunt")
             .Execute(choiceContext);
     }

@@ -5,6 +5,7 @@ using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.Entities.Powers;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
+using MegaCrit.Sts2.Core.HoverTips;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
 using MegaCrit.Sts2.Core.Models.Powers;
 using MegaCrit.Sts2.Core.ValueProps;
@@ -21,6 +22,9 @@ public sealed class NiohShield : CharModCard
             new PowerVar<WeakPower>(1m)
         };
 
+    protected override IEnumerable<IHoverTip> ExtraHoverTips =>
+        new IHoverTip[] { HoverTipFactory.FromPower<WeakPower>() };
+
     public override bool GainsBlock => true;
 
     public NiohShield()
@@ -35,7 +39,7 @@ public sealed class NiohShield : CharModCard
             await CreatureCmd.GainBlock(base.Owner.Creature, base.DynamicVars.Block, cardPlay);
         }
 
-        foreach (var enemy in base.CombatState.Enemies.ToList())
+        foreach (var enemy in base.CombatState!.Enemies.ToList())
         {
             if (enemy.IsAlive)
             {

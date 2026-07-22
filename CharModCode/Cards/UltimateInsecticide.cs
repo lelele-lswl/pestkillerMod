@@ -30,7 +30,7 @@ public sealed class UltimateInsecticide : CharModCard
         await DamageCmd.Attack(base.DynamicVars.Damage.BaseValue)
             .WithHitCount(hitCount)
             .FromCard(this)
-            .TargetingAllOpponents(base.CombatState)
+            .TargetingAllOpponents(base.CombatState!)
             .WithHitFx("vfx/vfx_attack_blunt")
             .Execute(choiceContext);
     }

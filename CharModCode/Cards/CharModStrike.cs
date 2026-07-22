@@ -24,7 +24,7 @@ public sealed class CharModStrike : CharModCard
     {
         await DamageCmd.Attack(base.DynamicVars.Damage.BaseValue)
             .FromCard(this)
-            .Targeting(cardPlay.Target)
+            .Targeting(cardPlay.Target!)
             .WithHitFx("vfx/vfx_attack_slash")
             .Execute(choiceContext);
     }

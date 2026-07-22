@@ -18,7 +18,7 @@ public sealed class NuclearFissionPower : CharModPower
         if (card.Owner.Creature == base.Owner)
         {
             Flash();
-            await PlayerCmd.GainEnergy(base.Amount, base.Owner.Player);
+            await PlayerCmd.GainEnergy(base.Amount, base.Owner.Player!);
         }
     }
 }

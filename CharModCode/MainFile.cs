@@ -3,8 +3,14 @@ using HarmonyLib;
 using MegaCrit.Sts2.Core.Modding;
 using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Models.Relics;
+using MegaCrit.Sts2.Core.Nodes;
+using MegaCrit.Sts2.Core.Nodes.Combat;
+using MegaCrit.Sts2.Core.Nodes.CommonUi;
+using System.Collections.Generic;
 using System.Reflection;
+using BindingFlags = System.Reflection.BindingFlags;
 using CharMod.CharModCode.Relics;
+using CharMod.CharModCode.Scenes;
 using CharacterCharMod = CharMod.CharModCode.Character.CharMod;
 
 namespace CharMod.CharModCode;
@@ -34,7 +40,7 @@ public partial class MainFile : Node
         catch (System.Exception e)
         {
             Logger.Error($"Failed to create character model: {e.Message}");
-            Logger.Error(e.StackTrace);
+            Logger.Error(e.StackTrace ?? string.Empty);
         }
 
         Harmony harmony = new(ModId);
@@ -112,7 +118,7 @@ public static class RestSiteAnimPathPatch
     {
         if (__instance is CharacterCharMod)
         {
-            __result = "res://scenes/rest_site/characters/ironclad_rest_site.tscn";
+            __result = "res://scenes/rest_site/characters/charmod_rest_site.tscn";
         }
     }
 }
@@ -142,5 +148,93 @@ public static class TouchOfOrobasRefinementPatch
             return false;
         }
         return true;
+    }
+}
+
+// ==== 8. 动画触发器拦截（方案A：Tween 动画）====
+// 当 NCreature.SetAnimationTrigger 被调用时，如果 Visuals 是 CustomCreatureVisuals，
+// 把触发器转发过去，用 Godot Tween 代替 Spine 骨骼动画。
+[HarmonyPatch(typeof(NCreature), nameof(NCreature.SetAnimationTrigger))]
+public static class AnimationTriggerPatch
+{
+    static void Postfix(NCreature __instance, string trigger)
+    {
+        if (__instance.Visuals is CustomCreatureVisuals customVisuals)
+        {
+            customVisuals.PlayAnimation(trigger);
+        }
+    }
+}
+
+// ==== 9. 死亡动画触发 + 时长修正 ====
+// StartDeathAnim 中 SetAnimationTrigger("Dead") 包在 if (_spineAnimator != null) 里，
+// 没有 Spine 时永远不会触发死亡动画。补丁直接调用 PlayAnimation("Dead")。
+[HarmonyPatch(typeof(NCreature), nameof(NCreature.StartDeathAnim))]
+public static class StartDeathAnimPatch
+{
+    static void Postfix(NCreature __instance, ref float __result)
+    {
+        if (__instance.Visuals is CustomCreatureVisuals customVisuals)
+        {
+            customVisuals.PlayAnimation("Dead");
+            __result = Mathf.Max(__result, CustomCreatureVisuals.DeathAnimLength);
+        }
+    }
+}
+
+// ==== 10. 修复 NInputManager._UnhandledInput 控制器摇杆错误刷屏 ====
+// 问题：来自 ControllerConfig 的默认映射中包含 controller_r_stick_up/down/left/right 四个动作，
+// 但它们在 InputMap 中可能不存在（游戏 bug），导致每个输入事件都产生 Godot 引擎错误。
+// 这些错误刷屏到控制台，每次滚轮事件产生 6-8 条错误日志，严重卡顿。
+// 修复：Prefix 完全接管原方法，跳过不在 InputMap 中的动作。
+[HarmonyPatch(typeof(NInputManager), "_UnhandledInput")]
+public static class FixMissingInputMapActionsPatch
+{
+    private static readonly FieldInfo? ControllerInputMapField =
+        typeof(NInputManager).GetField("_controllerInputMap",
+            BindingFlags.NonPublic | BindingFlags.Instance);
+
+    private static bool Prefix(NInputManager __instance, InputEvent inputEvent)
+    {
+        // 原方法的前置检查逻辑
+        if ((NGame.Instance?.Transition.InTransition ?? true) || !NGame.IsGameFocusedWindow())
+        {
+            return false;
+        }
+
+        var controllerInputMap = ControllerInputMapField?.GetValue(__instance) as Dictionary<StringName, StringName>;
+        if (controllerInputMap == null)
+        {
+            return false;
+        }
+
+        foreach (KeyValuePair<StringName, StringName> item in controllerInputMap)
+        {
+            // 关键修复：跳过 InputMap 中不存在的动作，避免 Godot 引擎错误
+            if (!InputMap.HasAction(item.Value))
+            {
+                continue;
+            }
+
+            if (inputEvent.IsActionPressed(item.Value))
+            {
+                InputEventAction inputEventAction = new InputEventAction
+                {
+                    Action = item.Key,
+                    Pressed = true
+                };
+                Input.ParseInputEvent(inputEventAction);
+            }
+            else if (inputEvent.IsActionReleased(item.Value))
+            {
+                InputEventAction inputEventAction2 = new InputEventAction
+                {
+                    Action = item.Key,
+                    Pressed = false
+                };
+                Input.ParseInputEvent(inputEventAction2);
+            }
+        }
+        return false; // 跳过原方法
     }
 }

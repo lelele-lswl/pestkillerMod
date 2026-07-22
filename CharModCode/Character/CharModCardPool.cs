@@ -61,6 +61,8 @@ public class CharModCardPool : CustomCardPoolModel
             ModelDb.Card<Backpack>(),         // 背包
             ModelDb.Card<WaitForOpening>(),   // 等待破绽
             ModelDb.Card<AnthonyRage>(),      // 安东尼之怒（白卡）
+            ModelDb.Card<BlackFlash>(),       // 黑闪
+            ModelDb.Card<Slippery>(),         // 滑溜
 
             // ===== 罕见攻击 =====
             ModelDb.Card<TurnWasteIntoTreasure>(), // 变废为宝
@@ -76,12 +78,9 @@ public class CharModCardPool : CustomCardPoolModel
             ModelDb.Card<Electrocut>(),       // 电刑
             ModelDb.Card<InsertAnyone>(),     // 电棍
             ModelDb.Card<SlashStrike>(),      // 斩击
-            ModelDb.Card<HundredSlash>(),     // 百人斩
 
             // ===== 罕见技能 =====
             ModelDb.Card<Panacea>(),          // 万灵药
-            ModelDb.Card<BlackFlash>(),       // 黑闪
-            ModelDb.Card<Slippery>(),         // 滑溜
             ModelDb.Card<AcutePoison>(),      // 急性猛毒
             ModelDb.Card<Fry>(),              // 油炸
             ModelDb.Card<Braise>(),           // 红烧
@@ -95,19 +94,22 @@ public class CharModCardPool : CustomCardPoolModel
             ModelDb.Card<Printer>(),          // 打印机
             ModelDb.Card<BattleTalent>(),     // 战斗天赋
             ModelDb.Card<UltimateForging2>(), // 究极锻造2
+            ModelDb.Card<GeneMutation>(),     // 基因突变
+            ModelDb.Card<Antibiotic>(),       // 抗生素
 
             // ===== 罕见能力 =====
             ModelDb.Card<PoisonPoison>(),     // 毒毒！！
             ModelDb.Card<PoisonCoat>(),       // 涂毒plus
             ModelDb.Card<PoisonPoison2>(),    // 毒毒？？
             ModelDb.Card<AshCloak>(),         // 灰烬披风
-            ModelDb.Card<NuclearFission>(),   // 核裂变
             ModelDb.Card<Branch>(),           // 分支
             ModelDb.Card<Refine>(),           // 精炼
             ModelDb.Card<Mechanization>(),    // 机械化
             ModelDb.Card<Evolve>(),           // 进化
             ModelDb.Card<SleepOnThorns>(),    // 卧薪尝胆
             ModelDb.Card<BurnOut>(),          // 燃尽
+            ModelDb.Card<AssemblyLine>(),     // 流水线
+            ModelDb.Card<Tender>(),           // 嫩化
 
             // ===== 稀有攻击 =====
             ModelDb.Card<Gluttony>(),         // 饕餮
@@ -134,10 +136,9 @@ public class CharModCardPool : CustomCardPoolModel
             // ===== 稀有能力 =====
             ModelDb.Card<Barren>(),           // 片草不生
             ModelDb.Card<ElectricField>(),    // 电场
-            ModelDb.Card<AssemblyLine>(),     // 流水线
+            ModelDb.Card<NuclearFission>(),   // 核裂变
             ModelDb.Card<Plunder3>(),         // 掠夺3
             ModelDb.Card<Melt>(),             // 熔化
-            ModelDb.Card<Tender>(),           // 嫩化
             ModelDb.Card<Torture>(),          // 酷刑
             ModelDb.Card<Fool>(),             // 愚者
 

@@ -25,7 +25,7 @@ public sealed class BigBarrelInsecticide : CharModCard
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
-        foreach (Creature enemy in base.CombatState.Enemies.ToList())
+        foreach (Creature enemy in base.CombatState!.Enemies.ToList())
         {
             if (enemy.IsAlive)
             {

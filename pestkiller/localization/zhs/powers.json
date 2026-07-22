@@ -56,12 +56,12 @@
   "CHARMOD-ELECTRIC_FIELD_POWER.smartDescription": "每回合开始时，激发所有敌人身上的通路。",
 
   "CHARMOD-ASSEMBLY_LINE_POWER.title": "流水线",
-  "CHARMOD-ASSEMBLY_LINE_POWER.description": "每回合开始时，选择并消耗2张手牌，抽1张牌。",
-  "CHARMOD-ASSEMBLY_LINE_POWER.smartDescription": "每回合开始时，选择并消耗{Amount}张手牌，抽1张牌。",
+  "CHARMOD-ASSEMBLY_LINE_POWER.description": "每消耗2张牌，抽1张牌。",
+  "CHARMOD-ASSEMBLY_LINE_POWER.smartDescription": "每消耗{Amount}张牌，抽1张牌。",
 
   "CHARMOD-FOCUS_POWER.title": "聚能",
-  "CHARMOD-FOCUS_POWER.description": "含斩字的牌伤害提升20%。",
-  "CHARMOD-FOCUS_POWER.smartDescription": "含斩字的牌伤害提升{Amount}×20%。打出斩牌后层数清零。",
+  "CHARMOD-FOCUS_POWER.description": "含斩字的牌伤害提升50%。",
+  "CHARMOD-FOCUS_POWER.smartDescription": "含斩字的牌伤害提升{Amount}×50%。打出斩牌后层数清零。",
 
   "CHARMOD-SLASH_POWER.title": "斩",
   "CHARMOD-SLASH_POWER.description": "敌人攻击伤害×0.85。",
@@ -81,5 +81,9 @@
 
   "CHARMOD-ASH_CLOAK_POWER.title": "灰斗篷",
   "CHARMOD-ASH_CLOAK_POWER.description": "每当一张牌被消耗，获得1点格挡。",
-  "CHARMOD-ASH_CLOAK_POWER.smartDescription": "每当一张牌被消耗，获得{Amount}点格挡。"
+  "CHARMOD-ASH_CLOAK_POWER.smartDescription": "每当一张牌被消耗，获得{Amount}点格挡。",
+
+  "CHARMOD-ANTIBIOTIC_POWER.title": "抗生素",
+  "CHARMOD-ANTIBIOTIC_POWER.description": "本回合开始时，消耗你所有牌堆中的状态牌，每消耗一张失去 1 点生命，然后移除此效果。",
+  "CHARMOD-ANTIBIOTIC_POWER.smartDescription": "本回合开始时，消耗你所有牌堆中的状态牌，每消耗一张失去 1 点生命，然后移除此效果。"
 }
