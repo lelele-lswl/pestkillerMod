@@ -62,6 +62,6 @@ public sealed class Antibiotic : CharModCard
 
     protected override void OnUpgrade()
     {
-        AddKeyword(CardKeyword.Innate);
+        AddKeyword(CardKeyword.Retain);
     }
 }
